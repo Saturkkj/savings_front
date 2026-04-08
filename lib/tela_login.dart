@@ -23,7 +23,6 @@ import 'package:savings_front/tela_cadastro.dart';
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  // Ícone ou Logo do teu App
                   Container(
                     height: 220 ,
 
