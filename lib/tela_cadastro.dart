@@ -156,17 +156,16 @@ class _TelaCadastroState extends State<TelaCadastro> {
       labelText: label,
       prefixIcon: Icon(icon),
       filled: true,
-      fillColor: Colors.grey.shade200, // Um cinza bem clarinho e suave
+      fillColor: Colors.grey.shade200,
 
-      // Ajustando a borda pra combinar com o fundo novo
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: BorderSide.none, // Tira aquela linha preta forte em volta
+        borderSide: BorderSide.none,
       ),
-      // Borda de quando o cara clica pra digitar (foca no campo)
+
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: BorderSide(color: CoresApp.corPrincipal, width: 2), // Fica com a tua cor principal
+        borderSide: BorderSide(color: CoresApp.corPrincipal, width: 2),
       ),
     );
   }
