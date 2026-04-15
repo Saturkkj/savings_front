@@ -1,150 +1,151 @@
 import 'package:flutter/material.dart';
-import 'package:savings_front/cores_app.dart';
-import 'package:savings_front/tela_cadastro.dart';
+import 'package:savings_front/tela_navegacao.dart';
+import 'tela_recuperar_senha.dart';
+import 'cores_app.dart';
+import 'tela_cadastro.dart';
 
+class TelaLogin extends StatefulWidget {
+  const TelaLogin({super.key});
 
-  class LoginScreen extends StatefulWidget {
-    @override
-    _LoginScreenState createState() => _LoginScreenState();
+  @override
+  State<TelaLogin> createState() => _TelaLoginState();
+}
+
+class _TelaLoginState extends State<TelaLogin> {
+  final _emailController = TextEditingController();
+  final _senhaController = TextEditingController();
+
+  void _entrarNaGuilda() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const TelaNavegacao()),
+    );
   }
 
-  class _LoginScreenState extends State<LoginScreen> {
-    bool _ocultarSenha = true;
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: CoresApp.background,
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 30),
+        child: Column(
+          children: [
+            const SizedBox(height: 80),
+            Image.asset(
+                'assets/images/image.png', height: 200),
+            Text("Seu app de Educação Financeira", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: CoresApp.textMedContrast)),
+            const SizedBox(height: 50),
 
-    @override
-    Widget build(BuildContext context) {
-      return Scaffold(
-        backgroundColor: CoresApp.corSecundaria,
-        body: SafeArea(
-          child: Center(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(24.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Container(
-                    height: 220 ,
+            // --- Campo de E-mail ---
+            _buildRPGInput(
+              controller: _emailController,
+              label: "E-mail de herói",
+              icon: Icons.alternate_email,
+            ),
+            const SizedBox(height: 20),
 
-                    margin: const EdgeInsets.only(bottom: 24.0),
-                    child: Image.asset(
-                      'assets/images/logo.png'
-                    )
-                  ),
+            // --- Campo de Senha ---
+            _buildRPGInput(
+              controller: _senhaController,
+              label: "Senha mística",
+              icon: Icons.lock_outline,
+              isPassword: true,
+            ),
 
-                  Text(
-                    'Acesse para ver seus insights financeiros',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.grey.shade600,
-                    ),
-                  ),
-                  SizedBox(height: 48),
-
-                  // Campo de E-mail
-                  TextFormField(
-                    keyboardType: TextInputType.emailAddress,
-                    decoration: InputDecoration(
-                      labelText: 'E-mail',
-
-                      prefixIcon: Icon(Icons.person_outline),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 16),
-
-                  // Campo de Senha
-                  TextFormField(
-                    obscureText: _ocultarSenha,
-                    decoration: InputDecoration(
-                      labelText: 'Senha',
-                      prefixIcon: Icon(Icons.lock_outline),
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          _ocultarSenha ? Icons.visibility_off : Icons.visibility,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            _ocultarSenha = !_ocultarSenha;
-                          });
-                        },
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                  ),
-
-                  // Esqueci a senha
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: TextButton(
-                      onPressed: () {
-
-                      },
-                      child: Text(
-                        'Esqueceu a senha?',
-                        style: TextStyle(color: Colors.blue.shade700),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 24),
-
-                  // Botão
-                  ElevatedButton(
-                    onPressed: () {
-
-                      print("Bora pro app!");
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: CoresApp.corPrincipal,
-                      foregroundColor: CoresApp.corClara,
-                      padding: EdgeInsets.symmetric(vertical: 16),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      elevation: 2,
-                    ),
-                    child: Text(
-                      'Entrar',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 16),
-
-                  // Link pra criar conta nova
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text('Ainda não tem conta?'),
-                      TextButton(
-                        onPressed: () {
-                          Navigator.push(
-                              context, 
-                              MaterialPageRoute(builder: (Context) => TelaCadastro()),
-                          );
-                        },
-                        child: Text(
-                          'Cadastre-se',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.blue.shade700,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+            // --- Esqueci a Senha (O Feitiço) ---
+            Align(
+              alignment: Alignment.centerRight,
+              child: TextButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const TelaRecuperarSenha()),
+                  );
+                },
+                child: const Text(
+                  "Esqueceu o feitiço?",
+                  style: TextStyle(color: CoresApp.primary, fontSize: 12),
+                ),
               ),
             ),
-          ),
+
+            const SizedBox(height: 30),
+            SizedBox(
+              width: double.infinity,
+              height: 55,
+              child: ElevatedButton(
+                onPressed: () {
+                  final email = _emailController.text.trim();
+                  final senha = _senhaController.text.trim();
+
+                  if (email.isEmpty || senha.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        backgroundColor: CoresApp.dangerRed,
+                        behavior: SnackBarBehavior.floating,
+                        content: Row(
+                          children: const [
+                            Icon(Icons.error_outline, color: Colors.white),
+                            SizedBox(width: 10),
+                            Expanded(child: Text("Qual foi, herói? Preenche e-mail e senha pra entrar!", style: TextStyle(color: Colors.white))),
+                          ],
+                        ),
+                      ),
+                    );
+                    return;
+                  }
+
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => const TelaNavegacao()),
+                  );
+                },
+
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: CoresApp.textPrimaryVibrant),
+
+                child: const Text("ENTRAR NA GUILDA", style: TextStyle(fontWeight: FontWeight.bold)),
+              ),
+            ),
+
+            TextButton(
+              onPressed: () {
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const TelaCadastro()));
+              },
+              child: const Text("Novo por aqui? Criar conta de herói", style: TextStyle(color: CoresApp.textMedContrast)),
+            ),
+          ],
         ),
-      );
-    }
+      ),
+    );
   }
+
+  // Widget de Input Customizado no Estilo do App
+  Widget _buildRPGInput({
+    required TextEditingController controller,
+    required String label,
+    required IconData icon,
+    bool isPassword = false,
+  }) {
+    return TextField(
+      controller: controller,
+      obscureText: isPassword,
+      style: const TextStyle(color: Colors.white),
+      decoration: InputDecoration(
+        labelText: label,
+        labelStyle: const TextStyle(color: CoresApp.textMedContrast),
+        prefixIcon: Icon(icon, color: CoresApp.primary),
+        filled: true,
+        fillColor: CoresApp.cardBackground,
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+          borderSide: const BorderSide(color: Colors.transparent),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+          borderSide: const BorderSide(color: CoresApp.primary, width: 2),
+        ),
+      ),
+    );
+  }
+}

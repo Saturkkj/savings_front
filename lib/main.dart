@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-
 import 'tela_login.dart';
-import 'cores_app.dart';
 
 void main() {
-
-  runApp(MeuAppUPX());
+  runApp(const MeuAppUPX());
 }
 
 class MeuAppUPX extends StatelessWidget {
@@ -14,15 +11,9 @@ class MeuAppUPX extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'App UPX Finanças',
-
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-
-      home: LoginScreen(),
+      title: 'Savings RPG',
+      home: const TelaLogin(),
     );
   }
 }
