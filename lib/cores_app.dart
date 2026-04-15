@@ -26,5 +26,5 @@ class CoresApp {
   static const Color textHighContrast = Colors.white; // Branco (para títulos sobre o roxo)
   static const Color textMedContrast = Color(0xFFC0B6D9); // Cinza Roxo (para subtítulos, CORRIGIDO para contraste)
   static const Color textOnDarkContainer = Colors.black; // Preto (para usar sobre o fundo amarelo)
-  static const Color textPrimaryVibrant = Color(0xFFE5B912); // Amarelo vibrante (para alguns títulos)
+  static const Color textPrimaryVibrant = Color(0xFFE5B912); // Dourado (para alguns títulos)
 }

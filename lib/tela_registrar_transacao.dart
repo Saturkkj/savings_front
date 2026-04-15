@@ -15,7 +15,7 @@ class _TelaRegistrarTransacaoState extends State<TelaRegistrarTransacao> {
   String _categoriaGasto = 'Comida';
   String _categoriaInvest = 'Ações';
 
-  // Controlador pro Valor (pra no futuro você fazer o cálculo automático do rendimento)
+  // Controlador pro Valor (fazer o cálculo automático do rendimento dps)
   final _valorController = TextEditingController();
 
   @override
@@ -227,7 +227,7 @@ class _TelaRegistrarTransacaoState extends State<TelaRegistrarTransacao> {
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                           decoration: BoxDecoration(
-                            color: const Color(0xFF38E09E).withOpacity(0.2), // Verde transparente
+                            color: const Color(0xFF38E09E).withOpacity(0.2),
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: const Text("+12% a.a.", style: TextStyle(color: Color(0xFF38E09E), fontWeight: FontWeight.bold, fontSize: 12)),
@@ -270,7 +270,7 @@ class _TelaRegistrarTransacaoState extends State<TelaRegistrarTransacao> {
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF162521), // Fundo esverdeado escuro
+                  color: const Color(0xFF162521),
                   borderRadius: BorderRadius.circular(15),
                   border: Border.all(color: const Color(0xFF38E09E).withOpacity(0.3)),
                 ),
@@ -400,9 +400,9 @@ class _TelaRegistrarTransacaoState extends State<TelaRegistrarTransacao> {
         margin: const EdgeInsets.only(right: 10),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         decoration: BoxDecoration(
-          color: isSelecionado ? const Color(0xFF5A4C8C) : CoresApp.cardBackground, // Roxo se ativo
+          color: isSelecionado ? const Color(0xFF5A4C8C) : CoresApp.cardBackground,
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: isSelecionado ? const Color(0xFFCC1AFE) : Colors.transparent), // Borda magia
+          border: Border.all(color: isSelecionado ? const Color(0xFFCC1AFE) : Colors.transparent),
         ),
         child: Row(
           children: [

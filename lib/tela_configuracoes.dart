@@ -12,8 +12,6 @@ class TelaConfiguracoes extends StatefulWidget {
 
 class _TelaConfiguracoesState extends State<TelaConfiguracoes> {
   bool _notificacoes = true;
-  bool _modoEscuro = true;
-  bool _sonsRpg = false;
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +23,6 @@ class _TelaConfiguracoesState extends State<TelaConfiguracoes> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Cabeçalho igual ao que já fizemos...
-
               // --- SEÇÃO: DADOS DO HERÓI (Editáveis) ---
               const Text("DADOS DA JORNADA", style: TextStyle(color: CoresApp.textMedContrast, fontSize: 12, fontWeight: FontWeight.bold)),
               const SizedBox(height: 15),

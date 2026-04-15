@@ -78,7 +78,7 @@ class _TelaRecuperarSenhaState extends State<TelaRecuperarSenha> {
             Container(width: 40, height: 3, color: CoresApp.primary),
             const SizedBox(height: 30),
 
-            // --- COMO FUNCIONA (Passo a Passo) ---
+            // --- COMO FUNCIONA ---
             Align(
               alignment: Alignment.centerLeft,
               child: Text(
@@ -127,7 +127,6 @@ class _TelaRecuperarSenhaState extends State<TelaRecuperarSenha> {
               child: ElevatedButton(
                 onPressed: () {
                   // Aqui entra a lógica de disparar o e-mail (Firebase Auth, etc)
-                  // Pra simular a tela que tu mandou, vou só ativar o aviso verde
                   setState(() {
                     _feiticoEnviado = true;
                   });

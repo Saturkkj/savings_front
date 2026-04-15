@@ -70,7 +70,7 @@ class _TelaAnalisesState extends State<TelaAnalises> {
                 decoration: BoxDecoration(
                   color: CoresApp.cardBackground,
                   borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: diagnostico.cor.withOpacity(0.5), width: 2), // Borda com a cor do status
+                  border: Border.all(color: diagnostico.cor.withOpacity(0.5), width: 2),
                 ),
                 child: Column(
                   children: [
