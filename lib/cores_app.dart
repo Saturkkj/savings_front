@@ -1,15 +1,6 @@
 import 'package:flutter/material.dart';
 
 class CoresApp {
-  static const Color corEscura = Color(0xFF121212);
-
-  static const Color corPrincipal = Color(0xFF512D6C);
-
-  static const Color corSecundaria = Color(0xFFE5B912);
-
-  static const Color corClara = Color(0xFFFFFFFF);
-
-  static const Color corAlerta = Color(0xFFD32F2F);
   // O Fundo Lendário
   static const Color background = Color(0xFF512D6C); // Roxo bem escuro
   static const Color cardBackground = Color(0xFF2C1960); // Roxo ligeiramente mais claro para cards

@@ -8,119 +8,59 @@ class TelaInicial extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // puxar esses valores do teu banco de dados)
+    // --- SIMULAÇÃO DA MISSÃO ---
+    const double rendaFixa = 2000.0;
+    const double rendaExtra = 0.0;
+    const double gastosAtuais = 1000.0;
+
     final diagnostico = OraculoFinanceiro.avaliarMasmorra(
-      rendaFixa: 2000.0,
-      rendaExtra: 0.0,
-      gastosTotais: 1000.0,
+      rendaFixa: rendaFixa,
+      rendaExtra: rendaExtra,
+      gastosTotais: gastosAtuais,
     );
 
     return Scaffold(
       backgroundColor: CoresApp.background,
-
-      // --- O BOTÃO FLUTUANTE (Para registrar novos gastos/investimentos) ---
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const TelaRegistrarTransacao()),
-          );
+          Navigator.push(context, MaterialPageRoute(builder: (context) => const TelaRegistrarTransacao()));
         },
-        backgroundColor: CoresApp.primary, // Amarelo Ouro
+        backgroundColor: CoresApp.primary,
         elevation: 8,
         shape: const CircleBorder(),
         child: const Icon(Icons.add, color: Colors.black, size: 30),
       ),
-
-      // --- CORPO DA TELA ---
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // --- CABEÇALHO: NOME DO APP E MENU ---
+              // --- CABEÇALHO ---
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Row(
                     children: [
-                      const Icon(Icons.shield, color: CoresApp.primary, size: 28), // Troquei pra shield pra não dar erro de ícone
+                      const Icon(Icons.shield, color: CoresApp.primary, size: 28),
                       const SizedBox(width: 10),
-                      const Text(
-                        "Savings",
-                        style: TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                          color: CoresApp.primary,
-                        ),
-                      ),
+                      const Text("Savings RPG", style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: CoresApp.primary)),
                     ],
                   ),
                   const Icon(Icons.more_horiz, color: Colors.white),
                 ],
               ),
-
               const SizedBox(height: 25),
 
-              // --- STATUS DO HERÓI (NÍVEL E XP) ---
-              const Text(
-                "Olá, João Herói!",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
-              ),
-              const SizedBox(height: 5),
-              const Text(
-                "EXP — Nível 7 · Guardião Fiscal",
-                style: TextStyle(color: CoresApp.textMedContrast, fontSize: 12),
-              ),
+              // --- STATUS DO HERÓI ---
+              const Text("Olá, João Herói!", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white)),
+              const Text("EXP — Nível 7 · Guardião Fiscal", style: TextStyle(color: CoresApp.textMedContrast, fontSize: 12)),
               const SizedBox(height: 12),
-
-              // Barra de Progresso de XP
-              Row(
-                children: [
-                  Expanded(
-                    child: Stack(
-                      children: [
-                        Container(
-                          height: 12,
-                          decoration: BoxDecoration(
-                            color: CoresApp.cardBackground,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                        FractionallySizedBox(
-                          widthFactor: 0.7, // 70% de XP pro próximo nível
-                          child: Container(
-                            height: 12,
-                            decoration: BoxDecoration(
-                              color: CoresApp.primary,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: CoresApp.primary,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: const Text(
-                      "Nv. 7",
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12, color: Colors.black),
-                    ),
-                  ),
-                ],
-              ),
+              _buildBarraXP(),
 
               const SizedBox(height: 25),
 
-              // ==========================================
-              // CARD DO ORÁCULO (Resumo rápido do Status)
-              // ==========================================
+              // --- CARD DO ORÁCULO (50% DE GASTO = ATENÇÃO) ---
               Container(
                 padding: const EdgeInsets.all(15),
                 decoration: BoxDecoration(
@@ -130,75 +70,16 @@ class TelaInicial extends StatelessWidget {
                 ),
                 child: Row(
                   children: [
-                    Container(
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        color: diagnostico.cor.withOpacity(0.1),
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(diagnostico.icone, color: diagnostico.cor, size: 24),
-                    ),
+                    Icon(diagnostico.icone, color: diagnostico.cor, size: 30),
                     const SizedBox(width: 15),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            "Status: ${diagnostico.status}",
-                            style: TextStyle(
-                                color: diagnostico.cor,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            diagnostico.dica,
-                            style: const TextStyle(color: CoresApp.textMedContrast, fontSize: 11),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                          ),
+                          Text("Status: ${diagnostico.status}", style: TextStyle(color: diagnostico.cor, fontWeight: FontWeight.bold, fontSize: 16)),
+                          Text(diagnostico.dica, style: const TextStyle(color: CoresApp.textMedContrast, fontSize: 11)),
                         ],
                       ),
-                    ),
-                    const Icon(Icons.chevron_right, color: CoresApp.textMedContrast, size: 20),
-                  ],
-                ),
-              ),
-
-              const SizedBox(height: 25),
-
-              // --- CARD PRINCIPAL: TESOURO DO HERÓI (SALDO) ---
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(24),
-                decoration: BoxDecoration(
-                  color: CoresApp.primary,
-                  borderRadius: BorderRadius.circular(25),
-                  boxShadow: [
-                    BoxShadow(
-                      color: CoresApp.primary.withOpacity(0.3),
-                      blurRadius: 15,
-                      offset: const Offset(0, 8),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      "TESOURO DO HERÓI",
-                      style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1.2, color: Colors.black),
-                    ),
-                    const SizedBox(height: 10),
-                    const Text(
-                      "R\$ 1.240,00",
-                      style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold, color: Colors.black),
-                    ),
-                    const SizedBox(height: 5),
-                    Text(
-                      "Investimento até agora · +R\$180 vs mês anterior",
-                      style: TextStyle(fontSize: 12, color: Colors.black.withOpacity(0.6)),
                     ),
                   ],
                 ),
@@ -206,28 +87,37 @@ class TelaInicial extends StatelessWidget {
 
               const SizedBox(height: 35),
 
-              // --- MISSÕES ATIVAS ---
               Row(
                 children: [
                   const Icon(Icons.flag, color: CoresApp.primary, size: 20),
                   const SizedBox(width: 8),
                   const Text(
                     "MISSÕES ATIVAS",
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.bold,
-                      color: CoresApp.primary,
-                      letterSpacing: 1.1,
-                    ),
+                    style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: CoresApp.primary, letterSpacing: 1.1),
                   ),
                 ],
               ),
               const SizedBox(height: 15),
-
-              // Lista de Missões
               _buildMissionCard("Poupar R\$200 até o fim do mês", "+50 XP"),
               _buildMissionCard("Registrar 5 gastos seguidos", "+20 XP"),
               _buildMissionCard("Completar lição de orçamento", "+30 XP"),
+
+              const SizedBox(height: 35),
+
+              // --- ÚLTIMAS ATIVIDADES (O RAIO-X RÁPIDO) ---
+              const Text("ÚLTIMAS ATIVIDADES", style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.white, letterSpacing: 1.1)),
+              const SizedBox(height: 15),
+              _buildTransacaoItem("Aluguel da Taverna", "R\$ 300,00", Icons.house, "Fixos"),
+              _buildTransacaoItem("Mercado das Poções", "R\$ 180,00", Icons.shopping_cart, "Variáveis"),
+              _buildTransacaoItem("Pizza", "R\$ 80,00", Icons.local_pizza, "Pessoais"),
+
+              const SizedBox(height: 20),
+              Center(
+                child: TextButton(
+                    onPressed: () {},
+                    child: const Text("Ver todo o histórico", style: TextStyle(color: CoresApp.primary, fontSize: 13))
+                ),
+              ),
 
               const SizedBox(height: 80),
             ],
@@ -237,7 +127,54 @@ class TelaInicial extends StatelessWidget {
     );
   }
 
-  // WIDGET AUXILIAR PARA OS CARDS DE MISSÃO
+  // WIDGET AUXILIAR: ITEM DE TRANSAÇÃO
+  Widget _buildTransacaoItem(String nome, String valor, IconData icone, String categoria) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(color: CoresApp.cardBackground, borderRadius: BorderRadius.circular(15)),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(color: CoresApp.background, borderRadius: BorderRadius.circular(10)),
+            child: Icon(icone, color: Colors.white70, size: 20),
+          ),
+          const SizedBox(width: 15),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(nome, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14)),
+                Text(categoria, style: const TextStyle(color: CoresApp.textMedContrast, fontSize: 10)),
+              ],
+            ),
+          ),
+          Text("- $valor", style: const TextStyle(color: CoresApp.dangerRed, fontWeight: FontWeight.bold, fontSize: 14)),
+        ],
+      ),
+    );
+  }
+
+  // WIDGET AUXILIAR: BARRA DE XP
+  Widget _buildBarraXP() {
+    return Row(
+      children: [
+        Expanded(
+          child: Stack(
+            children: [
+              Container(height: 10, decoration: BoxDecoration(color: CoresApp.cardBackground, borderRadius: BorderRadius.circular(10))),
+              FractionallySizedBox(widthFactor: 0.7, child: Container(height: 10, decoration: BoxDecoration(color: CoresApp.primary, borderRadius: BorderRadius.circular(10)))),
+            ],
+          ),
+        ),
+        const SizedBox(width: 10),
+        const Text("Nv. 7", style: TextStyle(color: CoresApp.primary, fontWeight: FontWeight.bold, fontSize: 12)),
+      ],
+    );
+  }
+
+  // WIDGET AUXILIAR: CARDS DE MISSÃO
   Widget _buildMissionCard(String title, String xpValue) {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
@@ -251,25 +188,11 @@ class TelaInicial extends StatelessWidget {
           Container(
             width: 4,
             height: 30,
-            decoration: BoxDecoration(
-              color: CoresApp.primary,
-              borderRadius: BorderRadius.circular(2),
-            ),
+            decoration: BoxDecoration(color: CoresApp.primary, borderRadius: BorderRadius.circular(2)),
           ),
           const SizedBox(width: 15),
-          Expanded(
-            child: Text(
-              title,
-              style: const TextStyle(color: Colors.white, fontSize: 14),
-            ),
-          ),
-          Text(
-            xpValue,
-            style: const TextStyle(
-              color: CoresApp.primary,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+          Expanded(child: Text(title, style: const TextStyle(color: Colors.white, fontSize: 14))),
+          Text(xpValue, style: const TextStyle(color: CoresApp.primary, fontWeight: FontWeight.bold)),
         ],
       ),
     );
