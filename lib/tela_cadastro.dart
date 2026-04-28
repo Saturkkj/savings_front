@@ -37,11 +37,11 @@ class _TelaCadastroState extends State<TelaCadastro> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios, color: CoresApp.textPrimaryVibrant),
+            icon: Icon(Icons.arrow_back_ios, color: CoresApp.textYellow),
             onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const TelaLogin())),
         ),
-        iconTheme: const IconThemeData(color: CoresApp.primary),
-        title: const Text("Nova Jornada", style: TextStyle(color: CoresApp.primary)),
+        iconTheme: const IconThemeData(color: CoresApp.yellow),
+        title: const Text("Nova Jornada", style: TextStyle(color: CoresApp.yellow)),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(30),
@@ -55,7 +55,7 @@ class _TelaCadastroState extends State<TelaCadastro> {
             const SizedBox(height: 20),
 
             // --- SELEÇÃO DE CLASSE ---
-            const Text("Sua Classe de Herói:", style: TextStyle(color: CoresApp.textMedContrast)),
+            const Text("Sua Classe de Herói:", style: TextStyle(color: CoresApp.textcinza)),
             const SizedBox(height: 10),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -68,7 +68,7 @@ class _TelaCadastroState extends State<TelaCadastro> {
                   value: classeSelecionada,
                   dropdownColor: CoresApp.cardBackground,
                   style: const TextStyle(color: Colors.white, fontSize: 16),
-                  icon: const Icon(Icons.keyboard_arrow_down, color: CoresApp.primary),
+                  icon: const Icon(Icons.keyboard_arrow_down, color: CoresApp.yellow),
                   isExpanded: true,
                   items: classes.map((String classe) {
                     return DropdownMenuItem(value: classe, child: Text(classe));
@@ -128,7 +128,7 @@ class _TelaCadastroState extends State<TelaCadastro> {
                   if (nome.isEmpty || email.isEmpty || senha.isEmpty || confirma.isEmpty) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        backgroundColor: CoresApp.dangerRed,
+                        backgroundColor: CoresApp.red,
                         behavior: SnackBarBehavior.floating,
                         content: Row(
                           children: const [
@@ -166,7 +166,7 @@ class _TelaCadastroState extends State<TelaCadastro> {
                 },
 
                 style: ElevatedButton.styleFrom(
-                    backgroundColor: CoresApp.textPrimaryVibrant),
+                    backgroundColor: CoresApp.textYellow),
 
                 child: const Text(
                     "FORJAR MINHA CONTA",
@@ -194,8 +194,8 @@ class _TelaCadastroState extends State<TelaCadastro> {
       style: const TextStyle(color: Colors.white),
       decoration: InputDecoration(
         labelText: label,
-        labelStyle: const TextStyle(color: CoresApp.textMedContrast),
-        prefixIcon: Icon(icon, color: CoresApp.primary),
+        labelStyle: const TextStyle(color: CoresApp.textcinza),
+        prefixIcon: Icon(icon, color: CoresApp.yellow),
         filled: true,
         fillColor: CoresApp.cardBackground,
         enabledBorder: OutlineInputBorder(
@@ -204,7 +204,7 @@ class _TelaCadastroState extends State<TelaCadastro> {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(15),
-          borderSide: const BorderSide(color: CoresApp.primary, width: 2),
+          borderSide: const BorderSide(color: CoresApp.yellow, width: 2),
         ),
       ),
     );

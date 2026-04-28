@@ -32,8 +32,8 @@ class _TelaNavegacaoState extends State<TelaNavegacao> {
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: const Color(0xFF2C1960),
         type: BottomNavigationBarType.fixed,
-        selectedItemColor: CoresApp.primary,
-        unselectedItemColor: CoresApp.textMedContrast,
+        selectedItemColor: CoresApp.yellow,
+        unselectedItemColor: CoresApp.textcinza,
         currentIndex: _indiceAtual,
         onTap: (index) {
           setState(() {

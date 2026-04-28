@@ -56,7 +56,7 @@ class _TelaRecuperarSenhaState extends State<TelaRecuperarSenha> {
                 const Icon(Icons.lock, size: 50, color: Colors.white),
                 // O detalhe do raiozinho no cadeado
                 Positioned(
-                  child: Icon(Icons.flash_on, size: 20, color: CoresApp.primary),
+                  child: Icon(Icons.flash_on, size: 20, color: CoresApp.yellow),
                 ),
               ],
             ),
@@ -71,11 +71,11 @@ class _TelaRecuperarSenhaState extends State<TelaRecuperarSenha> {
             const Text(
               "Informe seu e-mail de herói e enviaremos um feitiço de recuperação.",
               textAlign: TextAlign.center,
-              style: TextStyle(color: CoresApp.textMedContrast, fontSize: 14),
+              style: TextStyle(color: CoresApp.textcinza, fontSize: 14),
             ),
 
             const SizedBox(height: 20),
-            Container(width: 40, height: 3, color: CoresApp.primary),
+            Container(width: 40, height: 3, color: CoresApp.yellow),
             const SizedBox(height: 30),
 
             // --- COMO FUNCIONA ---
@@ -104,8 +104,8 @@ class _TelaRecuperarSenhaState extends State<TelaRecuperarSenha> {
               style: const TextStyle(color: Colors.white),
               decoration: InputDecoration(
                 hintText: "Seu e-mail de herói",
-                hintStyle: const TextStyle(color: CoresApp.textMedContrast),
-                prefixIcon: const Icon(Icons.email_outlined, color: CoresApp.textMedContrast),
+                hintStyle: const TextStyle(color: CoresApp.textcinza),
+                prefixIcon: const Icon(Icons.email_outlined, color: CoresApp.textcinza),
                 filled: true,
                 fillColor: CoresApp.cardBackground,
                 enabledBorder: OutlineInputBorder(
@@ -114,7 +114,7 @@ class _TelaRecuperarSenhaState extends State<TelaRecuperarSenha> {
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15),
-                  borderSide: const BorderSide(color: CoresApp.primary, width: 2),
+                  borderSide: const BorderSide(color: CoresApp.yellow, width: 2),
                 ),
               ),
             ),
@@ -132,7 +132,7 @@ class _TelaRecuperarSenhaState extends State<TelaRecuperarSenha> {
                   });
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: CoresApp.primary,
+                  backgroundColor: CoresApp.yellow,
                   foregroundColor: Colors.black,
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                 ),
@@ -148,10 +148,10 @@ class _TelaRecuperarSenhaState extends State<TelaRecuperarSenha> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text("Lembrou a senha? ", style: TextStyle(color: CoresApp.textMedContrast)),
+                const Text("Lembrou a senha? ", style: TextStyle(color: CoresApp.textcinza)),
                 GestureDetector(
                   onTap: () => Navigator.pop(context),
-                  child: const Text("Voltar para o login", style: TextStyle(color: CoresApp.primary, fontWeight: FontWeight.bold)),
+                  child: const Text("Voltar para o login", style: TextStyle(color: CoresApp.yellow, fontWeight: FontWeight.bold)),
                 ),
               ],
             ),
@@ -165,25 +165,25 @@ class _TelaRecuperarSenhaState extends State<TelaRecuperarSenha> {
                 decoration: BoxDecoration(
                   color: CoresApp.cardBackground,
                   borderRadius: BorderRadius.circular(15),
-                  border: Border.all(color: CoresApp.successGreen.withOpacity(0.5)),
+                  border: Border.all(color: CoresApp.greenWater.withOpacity(0.5)),
                 ),
                 child: Row(
                   children: [
                     Container(
                       padding: const EdgeInsets.all(4),
                       decoration: BoxDecoration(
-                        color: CoresApp.successGreen.withOpacity(0.2),
+                        color: CoresApp.greenWater.withOpacity(0.2),
                         shape: BoxShape.circle,
                       ),
-                      child: const Icon(Icons.check, color: CoresApp.successGreen, size: 20),
+                      child: const Icon(Icons.check, color: CoresApp.greenWater, size: 20),
                     ),
                     const SizedBox(width: 15),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: const [
-                          Text("Feitiço enviado!", style: TextStyle(color: CoresApp.successGreen, fontWeight: FontWeight.bold)),
-                          Text("Verifique sua caixa de entrada, herói.", style: TextStyle(color: CoresApp.textMedContrast, fontSize: 12)),
+                          Text("Feitiço enviado!", style: TextStyle(color: CoresApp.greenWater, fontWeight: FontWeight.bold)),
+                          Text("Verifique sua caixa de entrada, herói.", style: TextStyle(color: CoresApp.textcinza, fontSize: 12)),
                         ],
                       ),
                     ),
@@ -207,7 +207,7 @@ class _TelaRecuperarSenhaState extends State<TelaRecuperarSenha> {
               width: 30,
               height: 30,
               decoration: const BoxDecoration(
-                color: CoresApp.primary,
+                color: CoresApp.yellow,
                 shape: BoxShape.circle,
               ),
               alignment: Alignment.center,
@@ -217,7 +217,7 @@ class _TelaRecuperarSenhaState extends State<TelaRecuperarSenha> {
               Container(
                 width: 2,
                 height: 30,
-                color: CoresApp.primary.withOpacity(0.3),
+                color: CoresApp.yellow.withOpacity(0.3),
               ),
           ],
         ),
@@ -228,7 +228,7 @@ class _TelaRecuperarSenhaState extends State<TelaRecuperarSenha> {
             children: [
               Text(titulo, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 15)),
               const SizedBox(height: 2),
-              Text(subtitulo, style: const TextStyle(color: CoresApp.textMedContrast, fontSize: 12)),
+              Text(subtitulo, style: const TextStyle(color: CoresApp.textcinza, fontSize: 12)),
               if (mostrarLinha) const SizedBox(height: 15),
             ],
           ),

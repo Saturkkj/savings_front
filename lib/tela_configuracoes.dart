@@ -24,7 +24,7 @@ class _TelaConfiguracoesState extends State<TelaConfiguracoes> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // --- SEÇÃO: DADOS DO HERÓI (Editáveis) ---
-              const Text("DADOS DA JORNADA", style: TextStyle(color: CoresApp.textMedContrast, fontSize: 12, fontWeight: FontWeight.bold)),
+              const Text("DADOS DA JORNADA", style: TextStyle(color: CoresApp.textcinza, fontSize: 12, fontWeight: FontWeight.bold)),
               const SizedBox(height: 15),
               _buildMenuButton(icon: Icons.work_outline, title: "Alterar Cargo", valor: "Engenheiro de Software"),
               _buildMenuButton(icon: Icons.payments_outlined, title: "Ajustar Salário", valor: "R\$ 2.000,00"),
@@ -33,7 +33,7 @@ class _TelaConfiguracoesState extends State<TelaConfiguracoes> {
               const SizedBox(height: 30),
 
               // --- SEÇÃO: CONTA ---
-              const Text("CONTA", style: TextStyle(color: CoresApp.textMedContrast, fontSize: 12, fontWeight: FontWeight.bold)),
+              const Text("CONTA", style: TextStyle(color: CoresApp.textcinza, fontSize: 12, fontWeight: FontWeight.bold)),
               const SizedBox(height: 15),
               _buildMenuButton(icon: Icons.person_outline, title: "Perfil do herói"),
               _buildMenuButton(icon: Icons.track_changes, title: "Minhas metas"),
@@ -42,7 +42,7 @@ class _TelaConfiguracoesState extends State<TelaConfiguracoes> {
               const SizedBox(height: 30),
 
               // --- SEÇÃO: PREFERÊNCIAS ---
-              const Text("PREFERÊNCIAS", style: TextStyle(color: CoresApp.textMedContrast, fontSize: 12, fontWeight: FontWeight.bold)),
+              const Text("PREFERÊNCIAS", style: TextStyle(color: CoresApp.textcinza, fontSize: 12, fontWeight: FontWeight.bold)),
               const SizedBox(height: 15),
               _buildMenuSwitch(
                 icon: Icons.notifications_active_outlined,
@@ -61,13 +61,13 @@ class _TelaConfiguracoesState extends State<TelaConfiguracoes> {
                   onPressed: () {
                     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const TelaLogin()));
                   },
-                  icon: const Icon(Icons.warning_amber_rounded, color: CoresApp.dangerRed),
+                  icon: const Icon(Icons.warning_amber_rounded, color: CoresApp.red),
                   label: const Text(
                     "Sair da Guilda",
-                    style: TextStyle(color: CoresApp.dangerRed, fontWeight: FontWeight.bold, fontSize: 16),
+                    style: TextStyle(color: CoresApp.red, fontWeight: FontWeight.bold, fontSize: 16),
                   ),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: CoresApp.dangerRed.withOpacity(0.15),
+                    backgroundColor: CoresApp.red.withOpacity(0.15),
                     elevation: 0,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                   ),
@@ -89,14 +89,14 @@ class _TelaConfiguracoesState extends State<TelaConfiguracoes> {
       margin: const EdgeInsets.only(bottom: 10),
       decoration: BoxDecoration(color: CoresApp.cardBackground, borderRadius: BorderRadius.circular(15)),
       child: ListTile(
-        leading: Icon(icon, color: CoresApp.primary, size: 22),
+        leading: Icon(icon, color: CoresApp.yellow, size: 22),
         title: Text(title, style: const TextStyle(color: Colors.white, fontSize: 14)),
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (valor != null) Text(valor, style: const TextStyle(color: CoresApp.textMedContrast, fontSize: 12)),
+            if (valor != null) Text(valor, style: const TextStyle(color: CoresApp.textcinza, fontSize: 12)),
             const SizedBox(width: 5),
-            const Icon(Icons.chevron_right, color: CoresApp.textMedContrast, size: 18),
+            const Icon(Icons.chevron_right, color: CoresApp.textcinza, size: 18),
           ],
         ),
         onTap: () {},
@@ -118,14 +118,14 @@ class _TelaConfiguracoesState extends State<TelaConfiguracoes> {
         borderRadius: BorderRadius.circular(15),
       ),
       child: ListTile(
-        leading: Icon(icon, color: CoresApp.textMedContrast, size: 24),
+        leading: Icon(icon, color: CoresApp.textcinza, size: 24),
         title: Text(title, style: const TextStyle(color: Colors.white, fontSize: 15)),
         trailing: Switch(
           value: value,
           onChanged: onChanged,
           activeColor: Colors.black,
-          activeTrackColor: CoresApp.primary,
-          inactiveThumbColor: CoresApp.textMedContrast,
+          activeTrackColor: CoresApp.yellow,
+          inactiveThumbColor: CoresApp.textcinza,
           inactiveTrackColor: CoresApp.background,
         ),
       ),

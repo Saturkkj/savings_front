@@ -5,31 +5,31 @@ import 'cores_app.dart';
 ThemeData appTheme(BuildContext context) {
   return ThemeData(
     scaffoldBackgroundColor: CoresApp.background,
-    primaryColor: CoresApp.primary,
+    primaryColor: CoresApp.yellow,
     useMaterial3: true,
     fontFamily: GoogleFonts.inter().fontFamily,
     textTheme: TextTheme(
       headlineMedium: GoogleFonts.poppins(
         fontSize: 24,
         fontWeight: FontWeight.bold,
-        color: CoresApp.primary,
+        color: CoresApp.yellow,
       ),
       headlineSmall: GoogleFonts.poppins(
         fontSize: 20,
         fontWeight: FontWeight.w600,
-          color: CoresApp.textHighContrast,
+          color: CoresApp.textWhite,
       ),
       bodyLarge: const TextStyle( // Texto principal
         fontSize: 16,
-        color: CoresApp.textMedContrast,
+        color: CoresApp.textcinza,
       ),
       bodyMedium: const TextStyle( // Texto secundário
         fontSize: 14,
-        color: CoresApp.textMedContrast,
+        color: CoresApp.textcinza,
       ),
       labelLarge: GoogleFonts.inter( // Para botões e badges
         fontWeight: FontWeight.bold,
-        color: CoresApp.textOnDarkContainer,
+        color: CoresApp.textBlack,
       ),
     ),
   );

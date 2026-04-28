@@ -33,7 +33,7 @@ class _TelaLoginState extends State<TelaLogin> {
             const SizedBox(height: 80),
             Image.asset(
                 'assets/images/image.png', height: 200),
-            Text("Seu app de Educação Financeira", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: CoresApp.textMedContrast)),
+            Text("Seu app de Educação Financeira", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: CoresApp.textcinza)),
             const SizedBox(height: 50),
 
             // --- Campo de E-mail ---
@@ -64,7 +64,7 @@ class _TelaLoginState extends State<TelaLogin> {
                 },
                 child: const Text(
                   "Esqueceu o feitiço?",
-                  style: TextStyle(color: CoresApp.primary, fontSize: 12),
+                  style: TextStyle(color: CoresApp.yellow, fontSize: 12),
                 ),
               ),
             ),
@@ -81,7 +81,7 @@ class _TelaLoginState extends State<TelaLogin> {
                   if (email.isEmpty || senha.isEmpty) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        backgroundColor: CoresApp.dangerRed,
+                        backgroundColor: CoresApp.red,
                         behavior: SnackBarBehavior.floating,
                         content: Row(
                           children: const [
@@ -102,7 +102,7 @@ class _TelaLoginState extends State<TelaLogin> {
                 },
 
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: CoresApp.textPrimaryVibrant),
+                  backgroundColor: CoresApp.textYellow),
 
                 child: const Text("ENTRAR NA GUILDA", style: TextStyle(fontWeight: FontWeight.bold)),
               ),
@@ -112,7 +112,7 @@ class _TelaLoginState extends State<TelaLogin> {
               onPressed: () {
                 Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const TelaCadastro()));
               },
-              child: const Text("Novo por aqui? Criar conta de herói", style: TextStyle(color: CoresApp.textMedContrast)),
+              child: const Text("Novo por aqui? Criar conta de herói", style: TextStyle(color: CoresApp.textcinza)),
             ),
           ],
         ),
@@ -133,8 +133,8 @@ class _TelaLoginState extends State<TelaLogin> {
       style: const TextStyle(color: Colors.white),
       decoration: InputDecoration(
         labelText: label,
-        labelStyle: const TextStyle(color: CoresApp.textMedContrast),
-        prefixIcon: Icon(icon, color: CoresApp.primary),
+        labelStyle: const TextStyle(color: CoresApp.textcinza),
+        prefixIcon: Icon(icon, color: CoresApp.yellow),
         filled: true,
         fillColor: CoresApp.cardBackground,
         enabledBorder: OutlineInputBorder(
@@ -143,7 +143,7 @@ class _TelaLoginState extends State<TelaLogin> {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(15),
-          borderSide: const BorderSide(color: CoresApp.primary, width: 2),
+          borderSide: const BorderSide(color: CoresApp.yellow, width: 2),
         ),
       ),
     );

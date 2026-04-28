@@ -33,7 +33,7 @@ class OraculoFinanceiro {
     if (porcentagem < 40) {
       return ResultadoOraculo(
         status: "Excelente",
-        cor: CoresApp.successGreen,
+        cor: CoresApp.greenWater,
         icone: Icons.sentiment_very_satisfied,
         dica: "Seu tesouro está seguro! Que tal investir 20% do que sobrou para multiplicar suas moedas?",
         porcentagemGasta: porcentagem,
@@ -41,7 +41,7 @@ class OraculoFinanceiro {
     } else if (porcentagem >= 40 && porcentagem < 70) {
       return ResultadoOraculo(
         status: "Atenção",
-        cor: CoresApp.primary,
+        cor: CoresApp.yellow,
         icone: Icons.sentiment_neutral,
         dica: "Você comprometeu ${porcentagem.toStringAsFixed(0)}% da renda. Cuidado na taverna! Separe 10% num cofrinho de emergência.",
         porcentagemGasta: porcentagem,
@@ -57,7 +57,7 @@ class OraculoFinanceiro {
     } else {
       return ResultadoOraculo(
         status: "No Vermelho",
-        cor: CoresApp.dangerRed, // Vermelho
+        cor: CoresApp.red, // Vermelho
         icone: Icons.error_outline,
         dica: "HP Crítico! Você gastou mais de 90% da sua renda. Cuidado para não cair nas garras do cheque especial!",
         porcentagemGasta: porcentagem,

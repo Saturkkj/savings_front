@@ -27,12 +27,12 @@ class _TelaConfiguracaoInicialState extends State<TelaConfiguracaoInicial> {
               const SizedBox(height: 40),
               const Text(
                 "Prepare seu Inventário",
-                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: CoresApp.primary),
+                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: CoresApp.yellow),
               ),
               const SizedBox(height: 10),
               const Text(
                 "Para o Oráculo te guiar, precisamos saber o tamanho do seu tesouro mensal.",
-                style: TextStyle(color: CoresApp.textMedContrast, fontSize: 14),
+                style: TextStyle(color: CoresApp.textcinza, fontSize: 14),
               ),
               const SizedBox(height: 40),
 
@@ -75,7 +75,7 @@ class _TelaConfiguracaoInicialState extends State<TelaConfiguracaoInicial> {
                     );
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: CoresApp.primary,
+                    backgroundColor: CoresApp.yellow,
                     foregroundColor: Colors.black,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                   ),
@@ -107,8 +107,8 @@ class _TelaConfiguracaoInicialState extends State<TelaConfiguracaoInicial> {
           style: const TextStyle(color: Colors.white),
           decoration: InputDecoration(
             hintText: hint,
-            hintStyle: TextStyle(color: CoresApp.textMedContrast.withOpacity(0.5)),
-            prefixIcon: Icon(icon, color: CoresApp.primary),
+            hintStyle: TextStyle(color: CoresApp.textcinza.withOpacity(0.5)),
+            prefixIcon: Icon(icon, color: CoresApp.yellow),
             filled: true,
             fillColor: CoresApp.cardBackground,
             enabledBorder: OutlineInputBorder(
@@ -117,7 +117,7 @@ class _TelaConfiguracaoInicialState extends State<TelaConfiguracaoInicial> {
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(15),
-              borderSide: BorderSide(color: CoresApp.primary.withOpacity(0.5)),
+              borderSide: BorderSide(color: CoresApp.yellow.withOpacity(0.5)),
             ),
           ),
         ),

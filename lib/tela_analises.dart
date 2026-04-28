@@ -77,7 +77,7 @@ class _TelaAnalisesState extends State<TelaAnalises> {
               const SizedBox(height: 20),
               Row(
                 children: [
-                  Icon(icone, color: CoresApp.primary, size: 28),
+                  Icon(icone, color: CoresApp.yellow, size: 28),
                   const SizedBox(width: 12),
                   Text("Categoria: $categoria", style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
                 ],
@@ -88,14 +88,14 @@ class _TelaAnalisesState extends State<TelaAnalises> {
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: CoresApp.primary.withOpacity(0.1),
+                  color: CoresApp.yellow.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(15),
-                  border: Border.all(color: CoresApp.primary.withOpacity(0.3)),
+                  border: Border.all(color: CoresApp.yellow.withOpacity(0.3)),
                 ),
-                child: Text("Dica: $dica", style: const TextStyle(color: CoresApp.primary, fontSize: 12, fontWeight: FontWeight.bold)),
+                child: Text("Dica: $dica", style: const TextStyle(color: CoresApp.yellow, fontSize: 12, fontWeight: FontWeight.bold)),
               ),
               const SizedBox(height: 25),
-              const Text("RAIO-X DOS GASTOS", style: TextStyle(color: CoresApp.textMedContrast, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1.1)),
+              const Text("RAIO-X DOS GASTOS", style: TextStyle(color: CoresApp.textcinza, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1.1)),
               const SizedBox(height: 10),
               Expanded(
                 child: ListView.builder(
@@ -106,7 +106,7 @@ class _TelaAnalisesState extends State<TelaAnalises> {
                       contentPadding: EdgeInsets.zero,
                       leading: Icon(item['icone'], color: Colors.white60),
                       title: Text(item['nome'], style: const TextStyle(color: Colors.white, fontSize: 14)),
-                      trailing: Text(item['valor'], style: const TextStyle(color: CoresApp.dangerRed, fontWeight: FontWeight.bold)),
+                      trailing: Text(item['valor'], style: const TextStyle(color: CoresApp.red, fontWeight: FontWeight.bold)),
                     );
                   },
                 ),
@@ -134,7 +134,7 @@ class _TelaAnalisesState extends State<TelaAnalises> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text("Mapa do Tesouro", style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: CoresApp.primary)),
+              const Text("Mapa do Tesouro", style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: CoresApp.yellow)),
               const SizedBox(height: 25),
 
               _buildPainelOraculo(diagnostico),
@@ -161,8 +161,8 @@ class _TelaAnalisesState extends State<TelaAnalises> {
                     centerSpaceRadius: 50,
                     sections: [
                       _buildSection(0, 45, "Fixos", const Color(0xFF8A2BE2)),
-                      _buildSection(1, 25, "Variáveis", CoresApp.primary),
-                      _buildSection(2, 20, "Pessoais", CoresApp.dangerRed),
+                      _buildSection(1, 25, "Variáveis", CoresApp.yellow),
+                      _buildSection(2, 20, "Pessoais", CoresApp.red),
                       _buildSection(3, 10, "Outros", const Color(0xFF00CED1)),
                     ],
                   ),
@@ -171,8 +171,8 @@ class _TelaAnalisesState extends State<TelaAnalises> {
 
               const SizedBox(height: 30),
               _buildLegenda("Gastos Fixos (45%)", const Color(0xFF8A2BE2), "Fixos"),
-              _buildLegenda("Gastos Variáveis (25%)", CoresApp.primary, "Variáveis"),
-              _buildLegenda("Gastos Pessoais (20%)", CoresApp.dangerRed, "Pessoais"),
+              _buildLegenda("Gastos Variáveis (25%)", CoresApp.yellow, "Variáveis"),
+              _buildLegenda("Gastos Pessoais (20%)", CoresApp.red, "Pessoais"),
               _buildLegenda("Outros (10%)", const Color(0xFF00CED1), "Outros"),
             ],
           ),

@@ -25,7 +25,7 @@ class TelaInicial extends StatelessWidget {
         onPressed: () {
           Navigator.push(context, MaterialPageRoute(builder: (context) => const TelaRegistrarTransacao()));
         },
-        backgroundColor: CoresApp.primary,
+        backgroundColor: CoresApp.yellow,
         elevation: 8,
         shape: const CircleBorder(),
         child: const Icon(Icons.add, color: Colors.black, size: 30),
@@ -42,9 +42,9 @@ class TelaInicial extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      const Icon(Icons.shield, color: CoresApp.primary, size: 28),
+                      const Icon(Icons.shield, color: CoresApp.yellow, size: 28),
                       const SizedBox(width: 10),
-                      const Text("Savings RPG", style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: CoresApp.primary)),
+                      const Text("Savings RPG", style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: CoresApp.yellow)),
                     ],
                   ),
                   const Icon(Icons.more_horiz, color: Colors.white),
@@ -54,7 +54,7 @@ class TelaInicial extends StatelessWidget {
 
               // --- STATUS DO HERÓI ---
               const Text("Olá, João Herói!", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white)),
-              const Text("EXP — Nível 7 · Guardião Fiscal", style: TextStyle(color: CoresApp.textMedContrast, fontSize: 12)),
+              const Text("EXP — Nível 7 · Guardião Fiscal", style: TextStyle(color: CoresApp.textcinza, fontSize: 12)),
               const SizedBox(height: 12),
               _buildBarraXP(),
 
@@ -77,7 +77,7 @@ class TelaInicial extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text("Status: ${diagnostico.status}", style: TextStyle(color: diagnostico.cor, fontWeight: FontWeight.bold, fontSize: 16)),
-                          Text(diagnostico.dica, style: const TextStyle(color: CoresApp.textMedContrast, fontSize: 11)),
+                          Text(diagnostico.dica, style: const TextStyle(color: CoresApp.textcinza, fontSize: 11)),
                         ],
                       ),
                     ),
@@ -89,11 +89,11 @@ class TelaInicial extends StatelessWidget {
 
               Row(
                 children: [
-                  const Icon(Icons.flag, color: CoresApp.primary, size: 20),
+                  const Icon(Icons.flag, color: CoresApp.yellow, size: 20),
                   const SizedBox(width: 8),
                   const Text(
                     "MISSÕES ATIVAS",
-                    style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: CoresApp.primary, letterSpacing: 1.1),
+                    style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: CoresApp.yellow, letterSpacing: 1.1),
                   ),
                 ],
               ),
@@ -115,7 +115,7 @@ class TelaInicial extends StatelessWidget {
               Center(
                 child: TextButton(
                     onPressed: () {},
-                    child: const Text("Ver todo o histórico", style: TextStyle(color: CoresApp.primary, fontSize: 13))
+                    child: const Text("Ver todo o histórico", style: TextStyle(color: CoresApp.yellow, fontSize: 13))
                 ),
               ),
 
@@ -146,11 +146,11 @@ class TelaInicial extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(nome, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14)),
-                Text(categoria, style: const TextStyle(color: CoresApp.textMedContrast, fontSize: 10)),
+                Text(categoria, style: const TextStyle(color: CoresApp.textcinza, fontSize: 10)),
               ],
             ),
           ),
-          Text("- $valor", style: const TextStyle(color: CoresApp.dangerRed, fontWeight: FontWeight.bold, fontSize: 14)),
+          Text("- $valor", style: const TextStyle(color: CoresApp.red, fontWeight: FontWeight.bold, fontSize: 14)),
         ],
       ),
     );
@@ -164,12 +164,12 @@ class TelaInicial extends StatelessWidget {
           child: Stack(
             children: [
               Container(height: 10, decoration: BoxDecoration(color: CoresApp.cardBackground, borderRadius: BorderRadius.circular(10))),
-              FractionallySizedBox(widthFactor: 0.7, child: Container(height: 10, decoration: BoxDecoration(color: CoresApp.primary, borderRadius: BorderRadius.circular(10)))),
+              FractionallySizedBox(widthFactor: 0.7, child: Container(height: 10, decoration: BoxDecoration(color: CoresApp.yellow, borderRadius: BorderRadius.circular(10)))),
             ],
           ),
         ),
         const SizedBox(width: 10),
-        const Text("Nv. 7", style: TextStyle(color: CoresApp.primary, fontWeight: FontWeight.bold, fontSize: 12)),
+        const Text("Nv. 7", style: TextStyle(color: CoresApp.yellow, fontWeight: FontWeight.bold, fontSize: 12)),
       ],
     );
   }
@@ -188,11 +188,11 @@ class TelaInicial extends StatelessWidget {
           Container(
             width: 4,
             height: 30,
-            decoration: BoxDecoration(color: CoresApp.primary, borderRadius: BorderRadius.circular(2)),
+            decoration: BoxDecoration(color: CoresApp.yellow, borderRadius: BorderRadius.circular(2)),
           ),
           const SizedBox(width: 15),
           Expanded(child: Text(title, style: const TextStyle(color: Colors.white, fontSize: 14))),
-          Text(xpValue, style: const TextStyle(color: CoresApp.primary, fontWeight: FontWeight.bold)),
+          Text(xpValue, style: const TextStyle(color: CoresApp.yellow, fontWeight: FontWeight.bold)),
         ],
       ),
     );

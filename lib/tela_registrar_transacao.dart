@@ -45,9 +45,9 @@ class _TelaRegistrarTransacaoState extends State<TelaRegistrarTransacao> {
         title: Row(
           mainAxisSize: MainAxisSize.min,
           children: const [
-            Icon(Icons.receipt_long, color: CoresApp.primary, size: 20),
+            Icon(Icons.receipt_long, color: CoresApp.yellow, size: 20),
             SizedBox(width: 8),
-            Text("Registrar Transação", style: TextStyle(color: CoresApp.primary, fontWeight: FontWeight.bold, fontSize: 18)),
+            Text("Registrar Transação", style: TextStyle(color: CoresApp.yellow, fontWeight: FontWeight.bold, fontSize: 18)),
           ],
         ),
         actions: const [
@@ -74,15 +74,15 @@ class _TelaRegistrarTransacaoState extends State<TelaRegistrarTransacao> {
                       child: Container(
                         padding: const EdgeInsets.symmetric(vertical: 12),
                         decoration: BoxDecoration(
-                          color: _isGasto ? CoresApp.primary : Colors.transparent,
+                          color: _isGasto ? CoresApp.yellow : Colors.transparent,
                           borderRadius: BorderRadius.circular(30),
                         ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(Icons.sports_esports_outlined, size: 18, color: _isGasto ? Colors.black : CoresApp.textMedContrast),
+                            Icon(Icons.sports_esports_outlined, size: 18, color: _isGasto ? Colors.black : CoresApp.textcinza),
                             const SizedBox(width: 8),
-                            Text("Gasto", style: TextStyle(fontWeight: FontWeight.bold, color: _isGasto ? Colors.black : CoresApp.textMedContrast)),
+                            Text("Gasto", style: TextStyle(fontWeight: FontWeight.bold, color: _isGasto ? Colors.black : CoresApp.textcinza)),
                           ],
                         ),
                       ),
@@ -100,9 +100,9 @@ class _TelaRegistrarTransacaoState extends State<TelaRegistrarTransacao> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(Icons.trending_up, size: 18, color: !_isGasto ? Colors.white : CoresApp.textMedContrast),
+                            Icon(Icons.trending_up, size: 18, color: !_isGasto ? Colors.white : CoresApp.textcinza),
                             const SizedBox(width: 8),
-                            Text("Investimento", style: TextStyle(fontWeight: FontWeight.bold, color: !_isGasto ? Colors.white : CoresApp.textMedContrast)),
+                            Text("Investimento", style: TextStyle(fontWeight: FontWeight.bold, color: !_isGasto ? Colors.white : CoresApp.textcinza)),
                           ],
                         ),
                       ),
@@ -121,7 +121,7 @@ class _TelaRegistrarTransacaoState extends State<TelaRegistrarTransacao> {
               decoration: BoxDecoration(
                 color: CoresApp.cardBackground,
                 borderRadius: BorderRadius.circular(15),
-                border: Border.all(color: CoresApp.textMedContrast.withOpacity(0.2)),
+                border: Border.all(color: CoresApp.textcinza.withOpacity(0.2)),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -131,7 +131,7 @@ class _TelaRegistrarTransacaoState extends State<TelaRegistrarTransacao> {
                     children: [
                       const Padding(
                         padding: EdgeInsets.only(top: 8.0, right: 8.0),
-                        child: Text("R\$", style: TextStyle(color: CoresApp.textMedContrast, fontSize: 16)),
+                        child: Text("R\$", style: TextStyle(color: CoresApp.textcinza, fontSize: 16)),
                       ),
                       Expanded(
                         child: TextField(
@@ -148,7 +148,7 @@ class _TelaRegistrarTransacaoState extends State<TelaRegistrarTransacao> {
                       ),
                     ],
                   ),
-                  const Text("Toque para digitar o valor", style: TextStyle(color: CoresApp.textMedContrast, fontSize: 12)),
+                  const Text("Toque para digitar o valor", style: TextStyle(color: CoresApp.textcinza, fontSize: 12)),
                 ],
               ),
             ),
@@ -215,7 +215,7 @@ class _TelaRegistrarTransacaoState extends State<TelaRegistrarTransacao> {
                 decoration: BoxDecoration(
                   color: CoresApp.cardBackground,
                   borderRadius: BorderRadius.circular(15),
-                  border: Border.all(color: CoresApp.textMedContrast.withOpacity(0.2)),
+                  border: Border.all(color: CoresApp.textcinza.withOpacity(0.2)),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -238,12 +238,12 @@ class _TelaRegistrarTransacaoState extends State<TelaRegistrarTransacao> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: const [
-                        Text("Em 12 meses, seu R\$0 vira", style: TextStyle(color: CoresApp.textMedContrast, fontSize: 12)),
-                        Text("R\$ 0,00", style: TextStyle(color: CoresApp.primary, fontSize: 16, fontWeight: FontWeight.bold)),
+                        Text("Em 12 meses, seu R\$0 vira", style: TextStyle(color: CoresApp.textcinza, fontSize: 12)),
+                        Text("R\$ 0,00", style: TextStyle(color: CoresApp.yellow, fontSize: 16, fontWeight: FontWeight.bold)),
                       ],
                     ),
                     const SizedBox(height: 5),
-                    const Text("Simulação baseada no tipo de ativo selecionado", style: TextStyle(color: CoresApp.textMedContrast, fontSize: 10)),
+                    const Text("Simulação baseada no tipo de ativo selecionado", style: TextStyle(color: CoresApp.textcinza, fontSize: 10)),
                   ],
                 ),
               ),
@@ -254,7 +254,7 @@ class _TelaRegistrarTransacaoState extends State<TelaRegistrarTransacao> {
             // --- COMPROVANTE (Comum para ambos) ---
             const Text("COMPROVANTE", style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1.1)),
             const SizedBox(height: 5),
-            if (_isGasto) const Text("Foto ou PDF — o app extrai os dados automaticamente!", style: TextStyle(color: CoresApp.textMedContrast, fontSize: 12)),
+            if (_isGasto) const Text("Foto ou PDF — o app extrai os dados automaticamente!", style: TextStyle(color: CoresApp.textcinza, fontSize: 12)),
             const SizedBox(height: 10),
             Row(
               children: [
@@ -305,22 +305,22 @@ class _TelaRegistrarTransacaoState extends State<TelaRegistrarTransacao> {
                 decoration: BoxDecoration(
                   color: CoresApp.cardBackground,
                   borderRadius: BorderRadius.circular(15),
-                  border: Border.all(color: CoresApp.primary.withOpacity(0.5)),
+                  border: Border.all(color: CoresApp.yellow.withOpacity(0.5)),
                 ),
                 child: Row(
                   children: [
-                    const Icon(Icons.flash_on, color: CoresApp.primary, size: 24),
+                    const Icon(Icons.flash_on, color: CoresApp.yellow, size: 24),
                     const SizedBox(width: 12),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: const [
-                          Text("Bônus de herói investidor!", style: TextStyle(color: CoresApp.primary, fontWeight: FontWeight.bold, fontSize: 14)),
-                          Text("Investimentos dão XP em dobro hoje", style: TextStyle(color: CoresApp.textMedContrast, fontSize: 12)),
+                          Text("Bônus de herói investidor!", style: TextStyle(color: CoresApp.yellow, fontWeight: FontWeight.bold, fontSize: 14)),
+                          Text("Investimentos dão XP em dobro hoje", style: TextStyle(color: CoresApp.textcinza, fontSize: 12)),
                         ],
                       ),
                     ),
-                    const Text("+100 XP", style: TextStyle(color: CoresApp.primary, fontWeight: FontWeight.bold, fontSize: 14)),
+                    const Text("+100 XP", style: TextStyle(color: CoresApp.yellow, fontWeight: FontWeight.bold, fontSize: 14)),
                   ],
                 ),
               ),
@@ -343,7 +343,7 @@ class _TelaRegistrarTransacaoState extends State<TelaRegistrarTransacao> {
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.black)
                 ),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: CoresApp.primary,
+                  backgroundColor: CoresApp.yellow,
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                   elevation: 5,
                 ),
@@ -374,14 +374,14 @@ class _TelaRegistrarTransacaoState extends State<TelaRegistrarTransacao> {
               decoration: BoxDecoration(
                 color: CoresApp.cardBackground,
                 shape: BoxShape.circle,
-                border: Border.all(color: isSelecionado ? CoresApp.primary : Colors.transparent, width: 2),
+                border: Border.all(color: isSelecionado ? CoresApp.yellow : Colors.transparent, width: 2),
               ),
               child: Center(child: Text(emoji, style: const TextStyle(fontSize: 20))),
             ),
             Text(
               titulo,
               style: TextStyle(
-                color: isSelecionado ? CoresApp.primary : CoresApp.textMedContrast,
+                color: isSelecionado ? CoresApp.yellow : CoresApp.textcinza,
                 fontSize: 10,
                 fontWeight: isSelecionado ? FontWeight.bold : FontWeight.normal,
               ),
@@ -411,7 +411,7 @@ class _TelaRegistrarTransacaoState extends State<TelaRegistrarTransacao> {
             Text(
               titulo,
               style: TextStyle(
-                color: isSelecionado ? Colors.white : CoresApp.textMedContrast,
+                color: isSelecionado ? Colors.white : CoresApp.textcinza,
                 fontWeight: isSelecionado ? FontWeight.bold : FontWeight.normal,
               ),
             ),
@@ -422,18 +422,18 @@ class _TelaRegistrarTransacaoState extends State<TelaRegistrarTransacao> {
   }
 
   // Input Text Estilo "Liso"
-  Widget _buildInputLiso(IconData icone, String hint, {Color colorIcon = CoresApp.textMedContrast}) {
+  Widget _buildInputLiso(IconData icone, String hint, {Color colorIcon = CoresApp.textcinza}) {
     return Container(
       decoration: BoxDecoration(
         color: CoresApp.cardBackground,
         borderRadius: BorderRadius.circular(15),
-        border: Border.all(color: CoresApp.textMedContrast.withOpacity(0.2)),
+        border: Border.all(color: CoresApp.textcinza.withOpacity(0.2)),
       ),
       child: TextField(
         style: const TextStyle(color: Colors.white),
         decoration: InputDecoration(
           hintText: hint,
-          hintStyle: const TextStyle(color: CoresApp.textMedContrast, fontSize: 14),
+          hintStyle: const TextStyle(color: CoresApp.textcinza, fontSize: 14),
           prefixIcon: Icon(icone, color: colorIcon, size: 20),
           border: InputBorder.none,
           contentPadding: const EdgeInsets.symmetric(vertical: 15),
@@ -449,15 +449,15 @@ class _TelaRegistrarTransacaoState extends State<TelaRegistrarTransacao> {
       decoration: BoxDecoration(
         color: CoresApp.cardBackground,
         borderRadius: BorderRadius.circular(15),
-        border: Border.all(color: CoresApp.textMedContrast.withOpacity(0.3)),
+        border: Border.all(color: CoresApp.textcinza.withOpacity(0.3)),
       ),
       child: Column(
         children: [
-          Icon(icone, color: CoresApp.textMedContrast, size: 30),
+          Icon(icone, color: CoresApp.textcinza, size: 30),
           const SizedBox(height: 10),
-          Text(titulo, style: const TextStyle(color: CoresApp.primary, fontWeight: FontWeight.bold, fontSize: 14)),
+          Text(titulo, style: const TextStyle(color: CoresApp.yellow, fontWeight: FontWeight.bold, fontSize: 14)),
           const SizedBox(height: 4),
-          Text(subtitulo, style: const TextStyle(color: CoresApp.textMedContrast, fontSize: 10)),
+          Text(subtitulo, style: const TextStyle(color: CoresApp.textcinza, fontSize: 10)),
         ],
       ),
     );
