@@ -34,3 +34,21 @@ flutter pub get
 ```bash
 flutter run
 ```
+## 📱 Rodando no Celular Físico (Via USB)
+Quer testar o app direto na sua mão em vez de usar o emulador? O esquema é liberar os poderes de desenvolvedor no seu aparelho Android:
+
+**1. Desbloqueando a Skill de Desenvolvedor:**
+* Vá nas **Configurações** do seu celular > **Sobre o telefone**.
+* Toque cerca de 7 vezes seguidas em **Versão da MIUI/SO** (ou Número da Versão/Build) até aparecer a mensagem "Você agora é um desenvolvedor!".
+
+**2. Ativando a Depuração USB:**
+* Volte para as Configurações e acesse **Configurações Adicionais** > **Opções do Desenvolvedor** (ou Sistema > Opções do Desenvolvedor).
+* Ative a chave **Depuração USB**. Em alguns aparelhos, é necessário ativar também a opção **Instalar via USB**.
+
+**3. Conectando os Mundos:**
+* Conecte o cabo USB no PC e no celular.
+* Um pop-up de segurança vai aparecer na tela do seu aparelho perguntando "Permitir depuração USB?". Marque a caixa de confiança e dê **OK**.
+
+**4. Instalando o App:**
+* No terminal da sua IDE, rode `flutter devices` para confirmar que o PC reconheceu seu aparelho.
+* Mande o `flutter run` e aguarde o app ser instalado!
