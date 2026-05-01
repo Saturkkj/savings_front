@@ -22,9 +22,12 @@ Siga os passos abaixo para compilar e executar o aplicativo localmente:
 bash
 git clone https://github.com/Saturkkj/savings_front.git
 
-2. bash
-   cd savings_front
-3. Bash
-   flutter pub get
-4. bash
-   flutter run
+2. **Acesse a pasta do projeto:**
+bash
+cd savings_front
+3. **Instale as dependências do Flutter:**
+Bash
+flutter pub get
+4. **Execute o aplicativo:**
+bash
+flutter run
