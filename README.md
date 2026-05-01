@@ -35,7 +35,7 @@ flutter pub get
 flutter run
 ```
 ## 📱 Rodando no Celular Físico (Via USB)
-Quer testar o app direto na sua mão em vez de usar o emulador? O esquema é liberar os poderes de desenvolvedor no seu aparelho Android:
+Quer testar o app direto na sua mão em vez de usar o emulador? O esquema é liberar o desenvolvedor no seu aparelho Android:
 
 **1. Desbloqueando a Skill de Desenvolvedor:**
 * Vá nas **Configurações** do seu celular > **Sobre o telefone**.
