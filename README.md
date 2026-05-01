@@ -20,7 +20,7 @@ Siga os passos abaixo para compilar e executar o aplicativo localmente:
 
 1. **Clone o repositório:**
 bash
-git clone 
+git clone https://github.com/Saturkkj/savings_front.git
 
 2. bash
    cd savings_front
