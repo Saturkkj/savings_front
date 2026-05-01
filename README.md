@@ -19,7 +19,7 @@ Antes de iniciar, certifique-se de ter as seguintes ferramentas configuradas em 
 Siga os passos abaixo para compilar e executar o aplicativo localmente:
 
 1. **Clone o repositório:**
-bash
+```bash
 git clone https://github.com/Saturkkj/savings_front.git
 
 2. **Acesse a pasta do projeto:**
