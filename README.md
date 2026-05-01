@@ -1,4 +1,4 @@
-# 🛡️ Savings RPG
+# 🛡️ Savings
 
 Bem-vindo ao repositório do **Savings**, um aplicativo de gestão financeira que transforma o controle dos seus gastos em uma jornada interativa e gamificada.
 
