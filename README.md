@@ -1,17 +1,30 @@
-# savings_front
+# 🛡️ Savings RPG
 
-A new Flutter project.
+Bem-vindo ao repositório do **Savings**, um aplicativo de gestão financeira que transforma o controle dos seus gastos em uma jornada interativa e gamificada.
 
-## Getting Started
+Desenvolvido com **Dart e Flutter** para o projeto acadêmico UPX, o aplicativo ajuda o usuário a categorizar despesas (Fixos, Variáveis, Pessoais e Outros) e oferece insights inteligentes sobre sua saúde financeira por meio do nosso "Oráculo Financeiro".
 
-This project is a starting point for a Flutter application.
+## 🎯 Principais Funcionalidades
+* **Dashboard Interativo**: Acompanhe o saldo disponível, seu nível atual e missões financeiras ativas.
+* **Análise de Gastos**: Visualização de despesas através de gráficos de pizza interativos (utilizando a biblioteca `fl_chart`), com detalhamento (Drill-down) por categoria.
+* **Oráculo Financeiro**: Sistema de inteligência que calcula o comprometimento da renda e fornece dicas de educação financeira em tempo real.
 
-A few resources to get you started if this is your first Flutter project:
+## 🛠️ Pré-requisitos
+Antes de iniciar, certifique-se de ter as seguintes ferramentas configuradas em seu ambiente de desenvolvimento:
+* [Flutter SDK](https://docs.flutter.dev/get-started/install)
+* Emulador Android/iOS configurado (ou um dispositivo físico conectado)
+* Git
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+## 🚀 Instruções de Execução (Front-end)
+Siga os passos abaixo para compilar e executar o aplicativo localmente:
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+1. **Clone o repositório:**
+bash
+git clone 
+
+2. bash
+   cd savings_front
+3. Bash
+   flutter pub get
+4. bash
+   flutter run
