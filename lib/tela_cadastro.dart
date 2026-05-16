@@ -37,8 +37,8 @@ class _TelaCadastroState extends State<TelaCadastro> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios, color: CoresApp.textYellow),
-            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const TelaLogin())),
+          icon: Icon(Icons.arrow_back_ios, color: CoresApp.textYellow),
+          onPressed: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const TelaLogin())),
         ),
         iconTheme: const IconThemeData(color: CoresApp.yellow),
         title: const Text("Nova Jornada", style: TextStyle(color: CoresApp.yellow)),
@@ -54,7 +54,6 @@ class _TelaCadastroState extends State<TelaCadastro> {
             ),
             const SizedBox(height: 20),
 
-            // --- SELEÇÃO DE CLASSE ---
             const Text("Sua Classe de Herói:", style: TextStyle(color: CoresApp.textcinza)),
             const SizedBox(height: 10),
             Container(
@@ -82,39 +81,16 @@ class _TelaCadastroState extends State<TelaCadastro> {
 
             const SizedBox(height: 30),
 
-            // --- FORMULÁRIO DE CADASTRO ---
-            _buildRPGInput(
-              controller: _nomeController,
-              label: "Nome do Herói",
-              icon: Icons.person_outline,
-            ),
+            _buildRPGInput(controller: _nomeController, label: "Nome do Herói", icon: Icons.person_outline),
             const SizedBox(height: 20),
-
-            _buildRPGInput(
-              controller: _emailController,
-              label: "E-mail de Herói",
-              icon: Icons.alternate_email,
-            ),
+            _buildRPGInput(controller: _emailController, label: "E-mail de Herói", icon: Icons.alternate_email),
             const SizedBox(height: 20),
-
-            _buildRPGInput(
-              controller: _senhaController,
-              label: "Criar Senha Mística",
-              icon: Icons.lock_outline,
-              isPassword: true,
-            ),
+            _buildRPGInput(controller: _senhaController, label: "Criar Senha Mística", icon: Icons.lock_outline, isPassword: true),
             const SizedBox(height: 20),
-
-            _buildRPGInput(
-              controller: _confirmarSenhaController,
-              label: "Confirmar Senha",
-              icon: Icons.lock_reset_outlined,
-              isPassword: true,
-            ),
+            _buildRPGInput(controller: _confirmarSenhaController, label: "Confirmar Senha", icon: Icons.lock_reset_outlined, isPassword: true),
 
             const SizedBox(height: 40),
 
-            // --- BOTÃO DE CONFIRMAR CADASTRO ---
             SizedBox(
               width: double.infinity,
               height: 55,
@@ -159,20 +135,20 @@ class _TelaCadastroState extends State<TelaCadastro> {
                     return;
                   }
 
+                  // === O PULO DO GATO: ENVIANDO OS DADOS PRA PRÓXIMA TELA ===
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const TelaConfiguracaoInicial()),
+                    MaterialPageRoute(builder: (context) => TelaConfiguracaoInicial(
+                      nomeHeroi: nome,
+                      emailHeroi: email,
+                      senhaHeroi: senha,
+                      classeHeroi: classeSelecionada,
+                    )),
                   );
                 },
 
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: CoresApp.textYellow),
-
-                child: const Text(
-                    "FORJAR MINHA CONTA",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)
-
-                ),
+                style: ElevatedButton.styleFrom(backgroundColor: CoresApp.textYellow),
+                child: const Text("FORJAR MINHA CONTA", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
               ),
             ),
           ],
@@ -181,13 +157,7 @@ class _TelaCadastroState extends State<TelaCadastro> {
     );
   }
 
-  // --- O MESMO WIDGET DE INPUT DA TELA DE LOGIN ---
-  Widget _buildRPGInput({
-    required TextEditingController controller,
-    required String label,
-    required IconData icon,
-    bool isPassword = false,
-  }) {
+  Widget _buildRPGInput({required TextEditingController controller, required String label, required IconData icon, bool isPassword = false}) {
     return TextField(
       controller: controller,
       obscureText: isPassword,
@@ -198,14 +168,8 @@ class _TelaCadastroState extends State<TelaCadastro> {
         prefixIcon: Icon(icon, color: CoresApp.yellow),
         filled: true,
         fillColor: CoresApp.cardBackground,
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(15),
-          borderSide: const BorderSide(color: Colors.transparent),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(15),
-          borderSide: const BorderSide(color: CoresApp.yellow, width: 2),
-        ),
+        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(15), borderSide: const BorderSide(color: Colors.transparent)),
+        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(15), borderSide: const BorderSide(color: CoresApp.yellow, width: 2)),
       ),
     );
   }

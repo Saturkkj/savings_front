@@ -3,6 +3,7 @@ import 'package:savings_front/tela_navegacao.dart';
 import 'tela_recuperar_senha.dart';
 import 'cores_app.dart';
 import 'tela_cadastro.dart';
+import 'api/auth_api.dart';
 
 class TelaLogin extends StatefulWidget {
   const TelaLogin({super.key});
@@ -74,35 +75,40 @@ class _TelaLoginState extends State<TelaLogin> {
               width: double.infinity,
               height: 55,
               child: ElevatedButton(
-                onPressed: () {
-                  final email = _emailController.text.trim();
-                  final senha = _senhaController.text.trim();
+                  onPressed: () async {
+                    final email = _emailController.text.trim();
+                    final senha = _senhaController.text.trim();
 
-                  if (email.isEmpty || senha.isEmpty) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        backgroundColor: CoresApp.red,
-                        behavior: SnackBarBehavior.floating,
-                        content: Row(
-                          children: const [
-                            Icon(Icons.error_outline, color: Colors.white),
-                            SizedBox(width: 10),
-                            Expanded(child: Text("Qual foi, herói? Preenche e-mail e senha pra entrar!", style: TextStyle(color: Colors.white))),
-                          ],
+                    if (email.isEmpty || senha.isEmpty) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          backgroundColor: Colors.redAccent,
+                          content: Text("Qual foi, herói? Preenche e-mail e senha pra entrar!"),
                         ),
-                      ),
-                    );
-                    return;
-                  }
+                      );
+                      return;
+                    }
+                    // Chama a API
+                    bool loginSucesso = await AuthAPI().login(email, senha);
 
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => const TelaNavegacao()),
-                  );
-                },
+                    if (loginSucesso) {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => const TelaNavegacao()),
+                      );
+                    } else {
+                      // Se a API disse NO (usuário não existe ou senha errada)
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          backgroundColor: Colors.redAccent,
+                          content: Text("Credenciais inválidas! Tem certeza que esse é o pergaminho certo?"),
+                        ),
+                      );
+                    }
+                  },
 
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: CoresApp.textYellow),
+                    backgroundColor: CoresApp.textYellow),
 
                 child: const Text("ENTRAR NA GUILDA", style: TextStyle(fontWeight: FontWeight.bold)),
               ),

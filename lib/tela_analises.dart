@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'cores_app.dart';
 import 'oraculo_financeiro.dart';
+import 'api/analise_api.dart';
 
 class TelaAnalises extends StatefulWidget {
   const TelaAnalises({super.key});
@@ -11,51 +13,53 @@ class TelaAnalises extends StatefulWidget {
 }
 
 class _TelaAnalisesState extends State<TelaAnalises> {
-  final double rendaFixaMes = 2000.0;
-  final double rendaExtraMes = 0.0;
-  final double gastosTotaisMes = 1000.0;
+  final _storage = const FlutterSecureStorage();
+
+  double rendaFixaMes = 0.0;
+  double gastosTotaisMes = 0.0;
+  List<dynamic> categoriasDaIA = [];
+  bool _carregando = true;
 
   int touchedIndex = -1;
 
-  void _mostrarExplicacao(String categoria) {
-    String descricao = "";
-    String dica = "";
-    IconData icone = Icons.help_outline;
-    List<Map<String, dynamic>> gastosDetalhados = [];
+  @override
+  void initState() {
+    super.initState();
+    _carregarDadosReais();
+  }
 
-    if (categoria == "Fixos") {
-      icone = Icons.home_work;
-      descricao = "Gastos essenciais que garantem sua sobrevivência.";
-      dica = "O ideal é que não passem de 50% da sua renda total.";
-      gastosDetalhados = [
-        {"nome": "Aluguel da Taverna", "valor": "R\$ 300,00", "icone": Icons.house},
-        {"nome": "Sinal Mágico (Internet)", "valor": "R\$ 80,00", "icone": Icons.wifi},
-        {"nome": "Energia (Luz)", "valor": "R\$ 70,00", "icone": Icons.lightbulb},
-      ];
-    } else if (categoria == "Variáveis") {
-      icone = Icons.shopping_cart;
-      descricao = "Itens necessários com valores que oscilam.";
-      dica = "Tente manter em até 30% para não comprometer o tesouro.";
-      gastosDetalhados = [
-        {"nome": "Mercado das Poções", "valor": "R\$ 180,00", "icone": Icons.local_grocery_store},
-        {"nome": "Carruagem (Uber/Ônibus)", "valor": "R\$ 70,00", "icone": Icons.directions_bus},
-      ];
-    } else if (categoria == "Pessoais") {
-      icone = Icons.sports_esports;
-      descricao = "Recompensas e lazer para manter sua sanidade.";
-      dica = "Sabia que apenas 20% dos seus gastos devem ir para lazer?";
-      gastosDetalhados = [
-        {"nome": "Pizza", "valor": "R\$ 80,00", "icone": Icons.local_pizza},
-        {"nome": "Jogos na Steam", "valor": "R\$ 120,00", "icone": Icons.videogame_asset},
-      ];
-    } else {
-      icone = Icons.question_mark;
-      descricao = "Imprevistos e gastos fora do padrão.";
-      dica = "Tenha sempre uma reserva para emergências.";
-      gastosDetalhados = [
-        {"nome": "Conserto da Espada", "valor": "R\$ 100,00", "icone": Icons.build},
-      ];
+  Future<void> _carregarDadosReais() async {
+    setState(() => _carregando = true);
+
+    String? rendaSalva = await _storage.read(key: 'renda_total');
+    final relatorio = await AnaliseAPI().buscarRelatorioCompleto();
+
+    if (mounted) {
+      setState(() {
+        if (rendaSalva != null) rendaFixaMes = double.parse(rendaSalva);
+
+        if (relatorio != null) {
+          categoriasDaIA = relatorio['mediasPorCategoria'] ?? [];
+          gastosTotaisMes = categoriasDaIA.fold(0.0, (soma, item) => soma + (item['totalGastos'] ?? 0.0));
+        }
+        _carregando = false;
+      });
     }
+  }
+
+  // --- O TEU RAIO-X RESTAURADO COM DADOS AGREGADOS ---
+  void _mostrarExplicacao(dynamic itemDaIA) {
+    String categoria = itemDaIA['categoria'];
+    double total = itemDaIA['totalGastos'];
+    double media = itemDaIA['mediaGastos'] ?? 0.0;
+    int qtd = itemDaIA['quantidadeTransacoes'] ?? 0;
+
+    IconData icone = Icons.analytics;
+    String descricao = "Análise inteligente desta categoria.";
+
+    if (categoria.toLowerCase().contains("fixo") || categoria.toLowerCase().contains("moradia")) icone = Icons.home_work;
+    if (categoria.toLowerCase().contains("comida") || categoria.toLowerCase().contains("variável")) icone = Icons.shopping_cart;
+    if (categoria.toLowerCase().contains("pessoal") || categoria.toLowerCase().contains("lazer")) icone = Icons.sports_esports;
 
     showModalBottomSheet(
       context: context,
@@ -84,33 +88,18 @@ class _TelaAnalisesState extends State<TelaAnalises> {
               ),
               const SizedBox(height: 10),
               Text(descricao, style: const TextStyle(color: Colors.white70, fontSize: 14)),
-              const SizedBox(height: 20),
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: CoresApp.yellow.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(15),
-                  border: Border.all(color: CoresApp.yellow.withOpacity(0.3)),
-                ),
-                child: Text("Dica: $dica", style: const TextStyle(color: CoresApp.yellow, fontSize: 12, fontWeight: FontWeight.bold)),
-              ),
               const SizedBox(height: 25),
+
               const Text("RAIO-X DOS GASTOS", style: TextStyle(color: CoresApp.textcinza, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1.1)),
-              const SizedBox(height: 10),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: gastosDetalhados.length,
-                  itemBuilder: (context, index) {
-                    final item = gastosDetalhados[index];
-                    return ListTile(
-                      contentPadding: EdgeInsets.zero,
-                      leading: Icon(item['icone'], color: Colors.white60),
-                      title: Text(item['nome'], style: const TextStyle(color: Colors.white, fontSize: 14)),
-                      trailing: Text(item['valor'], style: const TextStyle(color: CoresApp.red, fontWeight: FontWeight.bold)),
-                    );
-                  },
-                ),
-              ),
+              const SizedBox(height: 15),
+
+              // Aqui a gente mostra o que o backend da Meg manda!
+              _buildInfoLinha("Média de Gastos", "R\$ ${media.toStringAsFixed(2).replaceAll('.', ',')}", Icons.calculate_outlined),
+              _buildInfoLinha("Qtd. de Transações", "$qtd registradas", Icons.receipt_long),
+              const Divider(color: Colors.white24, height: 30),
+              _buildInfoLinha("Total Acumulado", "R\$ ${total.toStringAsFixed(2).replaceAll('.', ',')}", Icons.account_balance_wallet, isDestaque: true),
+
+              const SizedBox(height: 20),
             ],
           ),
         );
@@ -118,99 +107,142 @@ class _TelaAnalisesState extends State<TelaAnalises> {
     );
   }
 
+  // Widget auxiliar pro Raio-X
+  Widget _buildInfoLinha(String titulo, String valor, IconData icone, {bool isDestaque = false}) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12.0),
+      child: Row(
+        children: [
+          Icon(icone, color: Colors.white60, size: 20),
+          const SizedBox(width: 12),
+          Text(titulo, style: const TextStyle(color: Colors.white, fontSize: 14)),
+          const Spacer(),
+          Text(
+              valor,
+              style: TextStyle(
+                  color: isDestaque ? CoresApp.red : CoresApp.yellow,
+                  fontWeight: FontWeight.bold,
+                  fontSize: isDestaque ? 16 : 14
+              )
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (_carregando) {
+      return const Scaffold(
+        backgroundColor: CoresApp.background,
+        body: Center(child: CircularProgressIndicator(color: CoresApp.yellow)),
+      );
+    }
+
     ResultadoOraculo diagnostico = OraculoFinanceiro.avaliarMasmorra(
       rendaFixa: rendaFixaMes,
-      rendaExtra: rendaExtraMes,
+      rendaExtra: 0.0,
       gastosTotais: gastosTotaisMes,
     );
 
     return Scaffold(
       backgroundColor: CoresApp.background,
       body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text("Mapa do Tesouro", style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: CoresApp.yellow)),
-              const SizedBox(height: 25),
+        child: RefreshIndicator(
+          onRefresh: _carregarDadosReais,
+          color: CoresApp.yellow,
+          child: SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text("Mapa do Tesouro", style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: CoresApp.yellow)),
+                const SizedBox(height: 25),
 
-              _buildPainelOraculo(diagnostico),
+                _buildPainelOraculo(diagnostico),
 
-              const SizedBox(height: 35),
+                const SizedBox(height: 35),
 
-              Container(
-                height: 250,
-                decoration: BoxDecoration(color: CoresApp.cardBackground, borderRadius: BorderRadius.circular(20)),
-                child: PieChart(
-                  PieChartData(
-                    pieTouchData: PieTouchData(
-                      touchCallback: (event, response) {
-                        if (response != null && response.touchedSection != null && event is FlTapUpEvent) {
-                          setState(() {
-                            touchedIndex = response.touchedSection!.touchedSectionIndex;
-                            List<String> nomes = ["Fixos", "Variáveis", "Pessoais", "Outros"];
-                            _mostrarExplicacao(nomes[touchedIndex]);
-                          });
-                        }
-                      },
+                Container(
+                  height: 250,
+                  decoration: BoxDecoration(color: CoresApp.cardBackground, borderRadius: BorderRadius.circular(20)),
+                  child: categoriasDaIA.isEmpty
+                      ? const Center(child: Text("Nenhum tesouro gasto ainda...", style: TextStyle(color: Colors.white54)))
+                      : PieChart(
+                    PieChartData(
+                      pieTouchData: PieTouchData(
+                        touchCallback: (event, response) {
+                          if (response != null && response.touchedSection != null && event is FlTapUpEvent) {
+                            setState(() {
+                              touchedIndex = response.touchedSection!.touchedSectionIndex;
+                              _mostrarExplicacao(categoriasDaIA[touchedIndex]);
+                            });
+                          }
+                        },
+                      ),
+                      sectionsSpace: 4,
+                      centerSpaceRadius: 50,
+                      sections: List.generate(categoriasDaIA.length, (i) {
+                        final item = categoriasDaIA[i];
+                        final cores = [const Color(0xFF8A2BE2), CoresApp.yellow, CoresApp.red, const Color(0xFF00CED1), Colors.orangeAccent];
+                        return _buildSection(i, item['totalGastos'], cores[i % cores.length]);
+                      }),
                     ),
-                    sectionsSpace: 4,
-                    centerSpaceRadius: 50,
-                    sections: [
-                      _buildSection(0, 45, "Fixos", const Color(0xFF8A2BE2)),
-                      _buildSection(1, 25, "Variáveis", CoresApp.yellow),
-                      _buildSection(2, 20, "Pessoais", CoresApp.red),
-                      _buildSection(3, 10, "Outros", const Color(0xFF00CED1)),
-                    ],
                   ),
                 ),
-              ),
 
-              const SizedBox(height: 30),
-              _buildLegenda("Gastos Fixos (45%)", const Color(0xFF8A2BE2), "Fixos"),
-              _buildLegenda("Gastos Variáveis (25%)", CoresApp.yellow, "Variáveis"),
-              _buildLegenda("Gastos Pessoais (20%)", CoresApp.red, "Pessoais"),
-              _buildLegenda("Outros (10%)", const Color(0xFF00CED1), "Outros"),
-            ],
+                const SizedBox(height: 30),
+
+                ...categoriasDaIA.asMap().entries.map((entry) {
+                  final i = entry.key;
+                  final item = entry.value;
+                  final cores = [const Color(0xFF8A2BE2), CoresApp.yellow, CoresApp.red, const Color(0xFF00CED1), Colors.orangeAccent];
+                  final porc = (item['totalGastos'] / (gastosTotaisMes > 0 ? gastosTotaisMes : 1)) * 100;
+
+                  return _buildLegenda(
+                      "${item['categoria']} (${porc.toStringAsFixed(0)}%)",
+                      cores[i % cores.length],
+                      item
+                  );
+                }).toList(),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 
-  // Widgets Auxiliares
-  PieChartSectionData _buildSection(int index, double valor, String titulo, Color cor) {
+  PieChartSectionData _buildSection(int index, double valor, Color cor) {
     return PieChartSectionData(
       color: cor,
       value: valor,
-      title: '${valor.toInt()}%',
+      title: 'R\$${valor.toInt()}',
       radius: index == touchedIndex ? 70 : 60,
-      titleStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white),
+      titleStyle: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.white),
     );
   }
 
-  Widget _buildLegenda(String texto, Color cor, String id) {
+  Widget _buildLegenda(String texto, Color cor, dynamic item) {
     return GestureDetector(
-        onTap: () => _mostrarExplicacao(id),
-    child: Container(
-    margin: const EdgeInsets.only(bottom: 10),
-    padding: const EdgeInsets.all(12),
-    decoration: BoxDecoration(color: CoresApp.cardBackground, borderRadius: BorderRadius.circular(15)),
-    child: Row(
-    children: [
-    Container(width: 12, height: 12, decoration: BoxDecoration(color: cor, shape: BoxShape.circle)),
-    const SizedBox(width: 12),
-    Text(texto, style: const TextStyle(color: Colors.white, fontSize: 14)),
-    const Spacer(),
-    const Icon(Icons.info_outline, color: Colors.white24, size: 18),
-    ],
-    ),
-    ),
+      onTap: () => _mostrarExplicacao(item),
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 10),
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(color: CoresApp.cardBackground, borderRadius: BorderRadius.circular(15)),
+        child: Row(
+          children: [
+            Container(width: 12, height: 12, decoration: BoxDecoration(color: cor, shape: BoxShape.circle)),
+            const SizedBox(width: 12),
+            Text(texto, style: const TextStyle(color: Colors.white, fontSize: 14)),
+            const Spacer(),
+            const Icon(Icons.info_outline, color: Colors.white24, size: 18),
+          ],
+        ),
+      ),
     );
-    }
+  }
 
   Widget _buildPainelOraculo(ResultadoOraculo diagnostico) {
     return Container(

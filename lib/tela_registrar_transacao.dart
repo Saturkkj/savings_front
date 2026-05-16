@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'cores_app.dart';
+import 'api/transacao_api.dart';
 
 class TelaRegistrarTransacao extends StatefulWidget {
   const TelaRegistrarTransacao({super.key});
@@ -10,18 +11,55 @@ class TelaRegistrarTransacao extends StatefulWidget {
 
 class _TelaRegistrarTransacaoState extends State<TelaRegistrarTransacao> {
   bool _isGasto = true;
+  bool _estaCarregando = false;
 
   // Controles de Categoria
   String _categoriaGasto = 'Comida';
   String _categoriaInvest = 'Ações';
 
-  // Controlador pro Valor (fazer o cálculo automático do rendimento dps)
+  // Controladores pro Valor e Descrição
   final _valorController = TextEditingController();
+  final _descricaoController = TextEditingController();
 
   @override
   void dispose() {
     _valorController.dispose();
+    _descricaoController.dispose();
     super.dispose();
+  }
+
+  // --- MAGIA DA INTEGRAÇÃO ---
+  Future<void> _registrarNoServidor() async {
+    final valorTexto = _valorController.text;
+    if (valorTexto.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Opa, faltou o valor das moedas!"), backgroundColor: Colors.redAccent),
+      );
+      return;
+    }
+
+    setState(() => _estaCarregando = true);
+
+    // Converte o valor pra número
+    double valorConvertido = double.parse(valorTexto.replaceAll(',', '.'));
+    String id = _descricaoController.text.isNotEmpty ? _descricaoController.text : "Transação sem nome";
+    String categoria = _isGasto ? _categoriaGasto : _categoriaInvest;
+
+    // Bate na API
+    bool sucesso = await TransacaoAPI().registrarGasto(id, valorConvertido, categoria, _isGasto);
+
+    setState(() => _estaCarregando = false);
+
+    if (sucesso && mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("+ XP Adicionado! Ouro registrado no cofre."), backgroundColor: Colors.green),
+      );
+      Navigator.pop(context, true);
+    } else if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("O goblim roubou a requisição! Tente novamente."), backgroundColor: Colors.redAccent),
+      );
+    }
   }
 
   @override
@@ -177,9 +215,9 @@ class _TelaRegistrarTransacaoState extends State<TelaRegistrarTransacao> {
               ),
               const SizedBox(height: 25),
 
-              _buildInputLiso(Icons.edit, "Descrição (ex: almoço no restaurante...)"),
+              _buildInputLiso(Icons.edit, "Descrição (ex: almoço no restaurante...)", controller: _descricaoController),
               const SizedBox(height: 15),
-              _buildInputLiso(Icons.calendar_today, "Data — hoje, 14/04/2026"),
+              _buildInputLiso(Icons.calendar_today, "Data — hoje"),
               const SizedBox(height: 15),
               _buildInputLiso(Icons.location_on_outlined, "Estabelecimento (opcional)", colorIcon: const Color(0xFFFF6B6B)),
 
@@ -200,9 +238,9 @@ class _TelaRegistrarTransacaoState extends State<TelaRegistrarTransacao> {
               ),
               const SizedBox(height: 25),
 
-              _buildInputLiso(Icons.edit, "Descrição (ex: PETR4, CDB Itaú...)"),
+              _buildInputLiso(Icons.edit, "Descrição (ex: PETR4, CDB Itaú...)", controller: _descricaoController),
               const SizedBox(height: 15),
-              _buildInputLiso(Icons.calendar_today, "Data — hoje, 14/04/2026"),
+              _buildInputLiso(Icons.calendar_today, "Data — hoje"),
               const SizedBox(height: 15),
               _buildInputLiso(Icons.account_balance, "Corretora ou banco (opcional)", colorIcon: const Color(0xFF38E09E)),
               const SizedBox(height: 25),
@@ -287,7 +325,7 @@ class _TelaRegistrarTransacaoState extends State<TelaRegistrarTransacao> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: const [
                           Text("nota_restaurante.jpg", style: TextStyle(color: Color(0xFF38E09E), fontWeight: FontWeight.bold, fontSize: 14)),
-                          Text("Extraído: R\$42,50 · Comida · 14/04", style: TextStyle(color: Color(0xFF38E09E), fontSize: 12)),
+                          Text("Extraído: R\$42,50 · Comida", style: TextStyle(color: Color(0xFF38E09E), fontSize: 12)),
                         ],
                       ),
                     ),
@@ -333,14 +371,14 @@ class _TelaRegistrarTransacaoState extends State<TelaRegistrarTransacao> {
               width: double.infinity,
               height: 55,
               child: ElevatedButton.icon(
-                onPressed: () {
-                  // Lógica de salvar a transação
-                  Navigator.pop(context);
-                },
-                icon: const Icon(Icons.sports_esports, color: Colors.black),
-                label: const Text(
-                    "Registrar e Ganhar XP",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.black)
+                // Aqui a mágica de carregar!
+                onPressed: _estaCarregando ? null : _registrarNoServidor,
+                icon: _estaCarregando
+                    ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.black, strokeWidth: 2))
+                    : const Icon(Icons.sports_esports, color: Colors.black),
+                label: Text(
+                    _estaCarregando ? "Forjando no servidor..." : "Registrar e Ganhar XP",
+                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.black)
                 ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: CoresApp.yellow,
@@ -422,7 +460,7 @@ class _TelaRegistrarTransacaoState extends State<TelaRegistrarTransacao> {
   }
 
   // Input Text Estilo "Liso"
-  Widget _buildInputLiso(IconData icone, String hint, {Color colorIcon = CoresApp.textcinza}) {
+  Widget _buildInputLiso(IconData icone, String hint, {Color colorIcon = CoresApp.textcinza, TextEditingController? controller}) {
     return Container(
       decoration: BoxDecoration(
         color: CoresApp.cardBackground,
@@ -430,6 +468,7 @@ class _TelaRegistrarTransacaoState extends State<TelaRegistrarTransacao> {
         border: Border.all(color: CoresApp.textcinza.withOpacity(0.2)),
       ),
       child: TextField(
+        controller: controller, // <-- Controller ligado aqui!
         style: const TextStyle(color: Colors.white),
         decoration: InputDecoration(
           hintText: hint,
