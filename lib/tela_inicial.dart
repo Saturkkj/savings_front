@@ -4,7 +4,7 @@ import 'cores_app.dart';
 import 'oraculo_financeiro.dart';
 import 'tela_registrar_transacao.dart';
 import 'api/recomendacao_api.dart';
-import 'api/analise_api.dart'; // O mensageiro da IA
+import 'api/analise_api.dart';
 
 class TelaInicial extends StatefulWidget {
   const TelaInicial({super.key});
@@ -138,17 +138,15 @@ class _TelaInicialState extends State<TelaInicial> {
     final diagnostico = OraculoFinanceiro.avaliarMasmorra(
       rendaFixa: _rendaRealDoUsuario,
       rendaExtra: 0.0,
-      gastosTotais: _gastosTotaisReais, // <-- O CÁLCULO AGORA É REAL!
+      gastosTotais: _gastosTotaisReais,
     );
 
     return Scaffold(
       backgroundColor: CoresApp.background,
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          // O AWAIT AQUI FAZ A MÁGICA DE ESPERAR A TELA FECHAR
           final resultado = await Navigator.push(context, MaterialPageRoute(builder: (context) => const TelaRegistrarTransacao()));
 
-          // Se registrou algo, recarrega o servidor sozinho!
           if (resultado == true) {
             _carregarDadosDaMasmorra();
           }
@@ -257,7 +255,7 @@ class _TelaInicialState extends State<TelaInicial> {
                     return _buildTransacaoItem(
                         anomalia['descricao'] ?? "Gasto Misterioso",
                         "R\$ ${anomalia['valor'].toStringAsFixed(2).replaceAll('.', ',')}",
-                        Icons.warning_amber_rounded, // Ícone de alerta!
+                        Icons.warning_amber_rounded,
                         anomalia['categoria'] ?? "Desconhecido"
                     );
                   }).toList(),

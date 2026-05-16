@@ -24,7 +24,6 @@ class _TelaConfiguracoesState extends State<TelaConfiguracoes> {
     _carregarDadosDoCofre();
   }
 
-  // Puxa as infos reais do celular
   Future<void> _carregarDadosDoCofre() async {
     String? nome = await _storage.read(key: 'nome_heroi');
     String? cargo = await _storage.read(key: 'cargo_heroi');
@@ -44,7 +43,6 @@ class _TelaConfiguracoesState extends State<TelaConfiguracoes> {
   Future<void> _editarDado(String titulo, String chaveCofre, bool isNumber) async {
     final TextEditingController controller = TextEditingController();
 
-    // Pega o valor que já tá salvo pra colocar no campo de texto
     String? valorAtual = await _storage.read(key: chaveCofre);
     if (valorAtual != null && !isNumber) controller.text = valorAtual;
 
@@ -78,15 +76,13 @@ class _TelaConfiguracoesState extends State<TelaConfiguracoes> {
                 onPressed: () async {
                   String novoValor = controller.text.trim();
                   if (novoValor.isNotEmpty) {
-                    // Se for número, troca a vírgula por ponto pro Dart não chorar
                     if (isNumber) novoValor = novoValor.replaceAll(',', '.');
 
-                    // Salva o ouro novo no cofre!
                     await _storage.write(key: chaveCofre, value: novoValor);
 
                     if (mounted) {
                       Navigator.pop(context);
-                      _carregarDadosDoCofre(); // Recarrega a tela na hora!
+                      _carregarDadosDoCofre();
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text("Inventário atualizado com sucesso!"), backgroundColor: Colors.green),
                       );
@@ -163,7 +159,7 @@ class _TelaConfiguracoesState extends State<TelaConfiguracoes> {
                 height: 55,
                 child: ElevatedButton.icon(
                   onPressed: () async {
-                    await _storage.deleteAll(); // Limpa o cofre ao sair!
+                    await _storage.deleteAll();
                     if (mounted) Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const TelaLogin()));
                   },
                   icon: const Icon(Icons.warning_amber_rounded, color: CoresApp.red),
@@ -201,7 +197,7 @@ class _TelaConfiguracoesState extends State<TelaConfiguracoes> {
           children: [
             if (valor != null) Text(valor, style: const TextStyle(color: CoresApp.textcinza, fontSize: 12)),
             const SizedBox(width: 5),
-            const Icon(Icons.edit, color: CoresApp.textcinza, size: 16), // Troquei a setinha pro ícone de lápis pra dar a visão que dá pra editar!
+            const Icon(Icons.edit, color: CoresApp.textcinza, size: 16),
           ],
         ),
         onTap: onTap ?? () {},

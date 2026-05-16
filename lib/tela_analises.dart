@@ -93,7 +93,6 @@ class _TelaAnalisesState extends State<TelaAnalises> {
               const Text("RAIO-X DOS GASTOS", style: TextStyle(color: CoresApp.textcinza, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1.1)),
               const SizedBox(height: 15),
 
-              // Aqui a gente mostra o que o backend da Meg manda!
               _buildInfoLinha("Média de Gastos", "R\$ ${media.toStringAsFixed(2).replaceAll('.', ',')}", Icons.calculate_outlined),
               _buildInfoLinha("Qtd. de Transações", "$qtd registradas", Icons.receipt_long),
               const Divider(color: Colors.white24, height: 30),

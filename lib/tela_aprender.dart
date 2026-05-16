@@ -124,7 +124,7 @@ class TelaAprender extends StatelessWidget {
                 statusText: "",
               ),
               _buildTrilhaCard(
-                icon: Icons.savings, // O porquinho
+                icon: Icons.savings,
                 title: "Investimento Inicial",
                 subtitle: "+60 XP · 5 aulas",
                 progress: 0.3,
@@ -139,7 +139,7 @@ class TelaAprender extends StatelessWidget {
                 isComplete: true,
               ),
 
-              // Trilhas Bloqueadas (A Magia do RPG)
+              // Trilhas Bloqueadas
               _buildTrilhaBloqueadaCard(icon: Icons.auto_awesome, title: "Renda Extra"),
               _buildTrilhaBloqueadaCard(icon: Icons.account_balance, title: "Tesouro Direto"),
             ],

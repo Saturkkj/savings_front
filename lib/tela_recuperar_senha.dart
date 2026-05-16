@@ -54,7 +54,6 @@ class _TelaRecuperarSenhaState extends State<TelaRecuperarSenha> {
                   ),
                 ),
                 const Icon(Icons.lock, size: 50, color: Colors.white),
-                // O detalhe do raiozinho no cadeado
                 Positioned(
                   child: Icon(Icons.flash_on, size: 20, color: CoresApp.yellow),
                 ),
@@ -126,7 +125,7 @@ class _TelaRecuperarSenhaState extends State<TelaRecuperarSenha> {
               height: 55,
               child: ElevatedButton(
                 onPressed: () {
-                  // Aqui entra a lógica de disparar o e-mail (Firebase Auth, etc)
+
                   setState(() {
                     _feiticoEnviado = true;
                   });

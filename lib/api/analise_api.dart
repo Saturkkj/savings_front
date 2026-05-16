@@ -11,7 +11,6 @@ class AnaliseAPI {
       final token = await _storage.read(key: 'jwt_token');
       if (token == null) return null;
 
-      // Pegando o mês e ano atual pra filtrar
       final agora = DateTime.now();
       final response = await http.get(
         Uri.parse('$baseUrl/inteligencia/relatorio?ano=${agora.year}&mes=${agora.month}'), // [cite: 68, 69]

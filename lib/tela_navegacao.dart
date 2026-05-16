@@ -15,7 +15,6 @@ class TelaNavegacao extends StatefulWidget {
 class _TelaNavegacaoState extends State<TelaNavegacao> {
   int _indiceAtual = 0;
 
-  // Lista com as telas que a gente já forjou
   final List<Widget> _telas = [
     const TelaInicial(),
     const TelaAnalises(),

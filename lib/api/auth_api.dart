@@ -37,7 +37,7 @@ class AuthAPI {
       if (classeHeroi == 'Mago dos Investimentos') perfilBackend = 'ARROJADO';
 
       final bodyEnviado = jsonEncode({
-        'nome': nome, // <-- TROCAMOS DE 'nome' PRA 'firstName' PRA TESTAR!
+        'nome': nome,
         'email': email,
         'senha': senha,
         'renda': renda,

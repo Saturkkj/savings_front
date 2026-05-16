@@ -468,7 +468,7 @@ class _TelaRegistrarTransacaoState extends State<TelaRegistrarTransacao> {
         border: Border.all(color: CoresApp.textcinza.withOpacity(0.2)),
       ),
       child: TextField(
-        controller: controller, // <-- Controller ligado aqui!
+        controller: controller,
         style: const TextStyle(color: Colors.white),
         decoration: InputDecoration(
           hintText: hint,

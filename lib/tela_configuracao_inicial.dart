@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'cores_app.dart';
 import 'tela_navegacao.dart';
-import 'api/auth_api.dart'; // O nosso mensageiro
+import 'api/auth_api.dart';
 
 class TelaConfiguracaoInicial extends StatefulWidget {
   final String nomeHeroi;
@@ -33,7 +33,6 @@ class _TelaConfiguracaoInicialState extends State<TelaConfiguracaoInicial> {
   Future<void> _finalizarJornada() async {
     setState(() => _estaCarregando = true);
 
-    // 1. Calcula a renda total substituindo a vírgula do brasileiro pelo ponto do Dart
     double salario = double.tryParse(_salarioController.text.replaceAll(',', '.')) ?? 0.0;
     double extra = double.tryParse(_rendaExtraController.text.replaceAll(',', '.')) ?? 0.0;
     double rendaTotal = salario + extra;
@@ -44,17 +43,14 @@ class _TelaConfiguracaoInicialState extends State<TelaConfiguracaoInicial> {
       return;
     }
 
-    // 2. Manda pro servidor da Meg cadastrar
     bool sucessoCadastro = await AuthAPI().registrarUsuario(
         widget.nomeHeroi, widget.emailHeroi, widget.senhaHeroi, rendaTotal, widget.classeHeroi
     );
 
     if (sucessoCadastro) {
-      // 3. Cadastrou? Já loga e pega o JWT!
       bool sucessoLogin = await AuthAPI().login(widget.emailHeroi, widget.senhaHeroi);
 
       if (sucessoLogin) {
-        // 4. Guarda tudo no cofre!
         await _storage.write(key: 'renda_total', value: rendaTotal.toString());
         await _storage.write(key: 'nome_heroi', value: widget.nomeHeroi);
         await _storage.write(key: 'cargo_heroi', value: _cargoController.text.isNotEmpty ? _cargoController.text : "Aventureiro");

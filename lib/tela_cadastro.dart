@@ -135,7 +135,6 @@ class _TelaCadastroState extends State<TelaCadastro> {
                     return;
                   }
 
-                  // === O PULO DO GATO: ENVIANDO OS DADOS PRA PRÓXIMA TELA ===
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => TelaConfiguracaoInicial(
