@@ -32,8 +32,8 @@ class RecomendacaoAPI {
         body: bodyDaRequisicao.isNotEmpty ? jsonEncode(bodyDaRequisicao) : jsonEncode({}),
       );
 
-      print("🚨 STATUS DO ORÁCULO: ${response.statusCode}");
-      print("🚨 RESPOSTA DO SERVIDOR: ${response.body}");
+      print("STATUS DO ORÁCULO: ${response.statusCode}");
+      print("RESPOSTA DO SERVIDOR: ${response.body}");
 
       if (response.statusCode == 200) {
         return jsonDecode(utf8.decode(response.bodyBytes));

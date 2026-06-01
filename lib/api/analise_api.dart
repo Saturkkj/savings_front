@@ -11,7 +11,6 @@ class AnaliseAPI {
       final token = await _storage.read(key: 'jwt_token');
       if (token == null) return null;
 
-      // Se mandar a data, a gente acopla na URL!
       String urlFinal = '$baseUrl/inteligencia/relatorio';
       if (ano != null && mes != null) {
         urlFinal += '?ano=$ano&mes=$mes';

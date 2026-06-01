@@ -41,7 +41,12 @@ class _TelaInicialState extends State<TelaInicial> {
 
     String? rendaSalva = await _storage.read(key: 'renda_total');
     String? nomeSalvo = await _storage.read(key: 'nome_heroi');
-    final relatorio = await AnaliseAPI().buscarRelatorioCompleto();
+
+    DateTime dataHoje = DateTime.now();
+    final relatorio = await AnaliseAPI().buscarRelatorioCompleto(
+      ano: dataHoje.year,
+      mes: dataHoje.month,
+    );
 
     if (mounted) {
       setState(() {
