@@ -20,7 +20,6 @@ class _TelaAnalisesState extends State<TelaAnalises> {
   double gastosTotaisMes = 0.0;
   List<dynamic> categoriasDaIA = [];
 
-  // Variável nova pra não quebrar o "Puxar pra Atualizar"
   bool _carregandoPrimeiraVez = true;
 
   int touchedIndex = -1;
@@ -37,7 +36,6 @@ class _TelaAnalisesState extends State<TelaAnalises> {
   }
 
   Future<void> _carregarDadosReais() async {
-    // Só esconde a tela se for a primeira vez abrindo o app
     if (categoriasDaIA.isEmpty) {
       setState(() => _carregandoPrimeiraVez = true);
     }
@@ -54,7 +52,11 @@ class _TelaAnalisesState extends State<TelaAnalises> {
 
         if (relatorio != null) {
           categoriasDaIA = relatorio['mediasPorCategoria'] ?? [];
-          gastosTotaisMes = categoriasDaIA.fold(0.0, (soma, item) => soma + (item['totalGastos'] ?? 0.0));
+
+          gastosTotaisMes = categoriasDaIA.fold(0.0, (soma, item) {
+            double valorDaCategoria = double.tryParse(item['totalGastos'].toString()) ?? 0.0;
+            return soma + valorDaCategoria;
+          });
         }
         _carregandoPrimeiraVez = false;
       });
@@ -188,7 +190,7 @@ class _TelaAnalisesState extends State<TelaAnalises> {
                           setState(() {
                             // Volta 1 mês
                             dataSelecionada = DateTime(dataSelecionada.year, dataSelecionada.month - 1);
-                            _carregarDadosReais(); // Faz a mágica acontecer!
+                            _carregarDadosReais();
                           });
                         },
                       ),
@@ -203,7 +205,6 @@ class _TelaAnalisesState extends State<TelaAnalises> {
                         icon: const Icon(Icons.chevron_right, color: CoresApp.yellow),
                         onPressed: () {
                           setState(() {
-                            // Avança 1 mês pro futuro (onde as parcelas tão escondidas!)
                             dataSelecionada = DateTime(dataSelecionada.year, dataSelecionada.month + 1);
                             _carregarDadosReais();
                           });
@@ -239,7 +240,7 @@ class _TelaAnalisesState extends State<TelaAnalises> {
                         final item = categoriasDaIA[i];
                         final cores = [const Color(0xFF8A2BE2), CoresApp.yellow, CoresApp.red, const Color(0xFF00CED1), Colors.orangeAccent];
 
-                        // 🔮 MÁGICA DA PORCENTAGEM AQUI:
+                        // PORCENTAGEM AQUI:
                         double valor = item['totalGastos'] ?? 0.0;
                         double porc = (gastosTotaisMes > 0) ? (valor / gastosTotaisMes) * 100 : 0;
 
@@ -275,8 +276,8 @@ class _TelaAnalisesState extends State<TelaAnalises> {
   PieChartSectionData _buildSection(int index, double valor, double porc, Color cor) {
     return PieChartSectionData(
       color: cor,
-      value: valor, // O tamanho da fatia continua sendo o valor real
-      title: '${porc.toStringAsFixed(1)}%', // O título agora exibe a porcentagem!
+      value: valor,
+      title: '${porc.toStringAsFixed(1)}%',
       radius: index == touchedIndex ? 70 : 60,
       titleStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white),
     );

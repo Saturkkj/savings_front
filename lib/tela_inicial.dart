@@ -33,7 +33,6 @@ class _TelaInicialState extends State<TelaInicial> {
     _carregarDadosDaMasmorra();
   }
 
-  // --- 🔮 BUSCA TUDO DE UMA VEZ ---
   Future<void> _carregarDadosDaMasmorra() async {
     setState(() {
       _carregandoTela = true;
@@ -51,7 +50,11 @@ class _TelaInicialState extends State<TelaInicial> {
 
         if (relatorio != null) {
           List<dynamic> categorias = relatorio['mediasPorCategoria'] ?? [];
-          _gastosTotaisReais = categorias.fold(0.0, (soma, item) => soma + (item['totalGastos'] ?? 0.0));
+
+          _gastosTotaisReais = categorias.fold(0.0, (soma, item) {
+            double valorDaCategoria = double.tryParse(item['totalGastos'].toString()) ?? 0.0;
+            return soma + valorDaCategoria;
+          });
 
           if (relatorio['anomalias'] != null && relatorio['anomalias']['anomalias'] != null) {
             _anomaliasRecentes = relatorio['anomalias']['anomalias'];
