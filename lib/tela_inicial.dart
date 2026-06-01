@@ -20,7 +20,12 @@ class _TelaInicialState extends State<TelaInicial> {
   double _gastosTotaisReais = 0.0;
   String _nomeDoHeroi = "Herói";
   List<dynamic> _anomaliasRecentes = [];
-  bool _carregando = true;
+
+  bool _carregandoTela = true;
+  bool _carregandoIA = true;
+
+  String _conselhoDaIA = "O Oráculo está meditando sobre seu tesouro...";
+  bool _temDividaIA = false;
 
   @override
   void initState() {
@@ -28,14 +33,15 @@ class _TelaInicialState extends State<TelaInicial> {
     _carregarDadosDaMasmorra();
   }
 
-  // --- 🔮 BUSCA A VERDADE NO COFRE E NO SERVIDOR ---
+  // --- 🔮 BUSCA TUDO DE UMA VEZ ---
   Future<void> _carregarDadosDaMasmorra() async {
-    setState(() => _carregando = true);
+    setState(() {
+      _carregandoTela = true;
+      _carregandoIA = true;
+    });
 
     String? rendaSalva = await _storage.read(key: 'renda_total');
     String? nomeSalvo = await _storage.read(key: 'nome_heroi');
-
-    // Puxa o relatório real
     final relatorio = await AnaliseAPI().buscarRelatorioCompleto();
 
     if (mounted) {
@@ -44,98 +50,42 @@ class _TelaInicialState extends State<TelaInicial> {
         if (nomeSalvo != null) _nomeDoHeroi = nomeSalvo;
 
         if (relatorio != null) {
-          // Soma todos os totais pra dar o diagnóstico certo
           List<dynamic> categorias = relatorio['mediasPorCategoria'] ?? [];
           _gastosTotaisReais = categorias.fold(0.0, (soma, item) => soma + (item['totalGastos'] ?? 0.0));
 
-          // Pega as anomalias pra exibir de alerta
           if (relatorio['anomalias'] != null && relatorio['anomalias']['anomalias'] != null) {
             _anomaliasRecentes = relatorio['anomalias']['anomalias'];
           }
         }
-        _carregando = false;
+        _carregandoTela = false;
+      });
+    }
+
+    final resultadoIA = await RecomendacaoAPI().buscarConselhoIA();
+
+    if (mounted) {
+      setState(() {
+        if (resultadoIA != null) {
+          _conselhoDaIA = resultadoIA['recomendacaoIA'] ?? "O Oráculo está em silêncio hoje.";
+          _temDividaIA = resultadoIA['modoDivida'] ?? false;
+        } else {
+          _conselhoDaIA = "Error, tente novamente mais tarde.";
+        }
+        _carregandoIA = false;
       });
     }
   }
 
-  Future<void> _consultarOraculo() async {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => const Center(
-        child: CircularProgressIndicator(color: CoresApp.yellow),
-      ),
-    );
-
-    final resultado = await RecomendacaoAPI().buscarConselhoIA();
-
-    if (context.mounted) Navigator.pop(context);
-
-    if (resultado != null && context.mounted) {
-      final String conselho = resultado['recomendacaoIA'] ?? "O Oráculo está meditando...";
-      final bool temDivida = resultado['modoDivida'] ?? false;
-
-      _mostrarPergaminhoDoOraculo(context, conselho, temDivida);
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-            backgroundColor: CoresApp.red,
-            content: Text("O Oráculo falhou na conexão! Verifique o túnel USB.")
-        ),
-      );
-    }
-  }
-
-  void _mostrarPergaminhoDoOraculo(BuildContext context, String conselho, bool temDivida) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          backgroundColor: CoresApp.cardBackground,
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15),
-              side: BorderSide(color: temDivida ? CoresApp.red : Colors.greenAccent, width: 1.5)
-          ),
-          title: Row(
-            children: [
-              Icon(
-                temDivida ? Icons.warning_amber_rounded : Icons.auto_awesome,
-                color: temDivida ? CoresApp.red : Colors.greenAccent,
-              ),
-              const SizedBox(width: 10),
-              Text(
-                temDivida ? "Profecia Sombria" : "Visão de Ouro",
-                style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
-          content: SingleChildScrollView(
-            child: Text(
-              conselho,
-              style: const TextStyle(color: CoresApp.textcinza, fontSize: 14, height: 1.5),
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text("Compreendido!", style: TextStyle(color: CoresApp.yellow, fontWeight: FontWeight.bold)),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    if (_carregando) {
+    if (_carregandoTela) {
       return const Scaffold(
         backgroundColor: CoresApp.background,
         body: Center(child: CircularProgressIndicator(color: CoresApp.yellow)),
       );
     }
 
-    final diagnostico = OraculoFinanceiro.avaliarMasmorra(
+    final diagnosticoLocal = OraculoFinanceiro.avaliarMasmorra(
       rendaFixa: _rendaRealDoUsuario,
       rendaExtra: 0.0,
       gastosTotais: _gastosTotaisReais,
@@ -146,7 +96,6 @@ class _TelaInicialState extends State<TelaInicial> {
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           final resultado = await Navigator.push(context, MaterialPageRoute(builder: (context) => const TelaRegistrarTransacao()));
-
           if (resultado == true) {
             _carregarDadosDaMasmorra();
           }
@@ -188,46 +137,64 @@ class _TelaInicialState extends State<TelaInicial> {
 
                 const SizedBox(height: 25),
 
+                // --- O CARD DO ORÁCULO AUTOMÁTICO ---
                 Container(
-                  padding: const EdgeInsets.all(15),
+                  padding: const EdgeInsets.all(18),
                   decoration: BoxDecoration(
                     color: CoresApp.cardBackground,
                     borderRadius: BorderRadius.circular(15),
-                    border: Border.all(color: diagnostico.cor.withOpacity(0.5), width: 1),
+                    border: Border.all(
+                        color: _temDividaIA ? CoresApp.red.withOpacity(0.6) : diagnosticoLocal.cor.withOpacity(0.5),
+                        width: 1.5
+                    ),
                   ),
-                  child: Row(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Icon(diagnostico.icone, color: diagnostico.cor, size: 30),
-                      const SizedBox(width: 15),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("Status: ${diagnostico.status}", style: TextStyle(color: diagnostico.cor, fontWeight: FontWeight.bold, fontSize: 16)),
-                            Text(diagnostico.dica, style: const TextStyle(color: CoresApp.textcinza, fontSize: 11)),
-                          ],
-                        ),
+                      Row(
+                        children: [
+                          Icon(
+                              _temDividaIA ? Icons.warning_amber_rounded : Icons.auto_awesome,
+                              color: _temDividaIA ? CoresApp.red : diagnosticoLocal.cor,
+                              size: 24
+                          ),
+                          const SizedBox(width: 10),
+                          Text(
+                              _temDividaIA ? "Profecia Sombria" : "Conselho do Oráculo",
+                              style: TextStyle(
+                                  color: _temDividaIA ? CoresApp.red : diagnosticoLocal.cor,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16
+                              )
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 15),
+
+                      _carregandoIA
+                          ? const Center(
+                          child: Padding(
+                              padding: EdgeInsets.symmetric(vertical: 10),
+                              child: CircularProgressIndicator(color: CoresApp.yellow)
+                          )
+                      )
+                          : Text(
+                          _conselhoDaIA,
+                          style: const TextStyle(color: Colors.white, fontSize: 13, height: 1.5)
+                      ),
+
+                      const SizedBox(height: 15),
+                      const Divider(color: Colors.white24, height: 1),
+                      const SizedBox(height: 10),
+
+                      Text(
+                          "Você comprometeu ${diagnosticoLocal.porcentagemGasta.toStringAsFixed(1)}% do seu tesouro este mês.",
+                          style: const TextStyle(color: CoresApp.textcinza, fontSize: 11, fontStyle: FontStyle.italic)
                       ),
                     ],
                   ),
                 ),
-
-                const SizedBox(height: 12),
-
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton.icon(
-                    onPressed: _consultarOraculo,
-                    icon: const Icon(Icons.auto_awesome, color: Colors.black, size: 20),
-                    label: const Text("Consultar o Oráculo Superior (IA)", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 14)),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: CoresApp.yellow,
-                      padding: const EdgeInsets.symmetric(vertical: 14),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-                      elevation: 5,
-                    ),
-                  ),
-                ),
+                // --- FIM DO NOVO CARD DO ORÁCULO ---
 
                 const SizedBox(height: 35),
 
@@ -244,7 +211,6 @@ class _TelaInicialState extends State<TelaInicial> {
 
                 const SizedBox(height: 35),
 
-                // --- ANOMALIAS NO LUGAR DAS ATIVIDADES ---
                 const Text("ALERTAS DA TAVERNA (ANOMALIAS)", style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.white, letterSpacing: 1.1)),
                 const SizedBox(height: 15),
 
@@ -276,7 +242,7 @@ class _TelaInicialState extends State<TelaInicial> {
       decoration: BoxDecoration(
           color: CoresApp.cardBackground,
           borderRadius: BorderRadius.circular(15),
-          border: Border.all(color: CoresApp.red.withOpacity(0.3)) // Borda vermelha pra anomalia
+          border: Border.all(color: CoresApp.red.withOpacity(0.3))
       ),
       child: Row(
         children: [

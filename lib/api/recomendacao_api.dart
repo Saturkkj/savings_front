@@ -10,6 +10,8 @@ class RecomendacaoAPI {
     try {
       final token = await _storage.read(key: 'jwt_token');
       if (token == null) return null;
+      
+      print("A CHAVE: [$token]");
 
       Map<String, dynamic> bodyDaRequisicao = {};
       if (valorDivida != null && mesesDeDivida != null) {
@@ -19,21 +21,26 @@ class RecomendacaoAPI {
         };
       }
 
+      print("Invocando o Oráculo em $baseUrl/recomendacao...");
+
       final response = await http.post(
         Uri.parse('$baseUrl/recomendacao'),
         headers: {
           'Authorization': 'Bearer $token',
           'Content-Type': 'application/json',
         },
-        body: bodyDaRequisicao.isNotEmpty ? jsonEncode(bodyDaRequisicao) : null,
+        body: bodyDaRequisicao.isNotEmpty ? jsonEncode(bodyDaRequisicao) : jsonEncode({}),
       );
+
+      print("🚨 STATUS DO ORÁCULO: ${response.statusCode}");
+      print("🚨 RESPOSTA DO SERVIDOR: ${response.body}");
 
       if (response.statusCode == 200) {
         return jsonDecode(utf8.decode(response.bodyBytes));
       }
       return null;
     } catch (e) {
-      print("Erro: $e");
+      print("Erro na rede: $e");
       return null;
     }
   }

@@ -6,26 +6,28 @@ class AnaliseAPI {
   final String baseUrl = 'http://localhost:8080';
   final _storage = const FlutterSecureStorage();
 
-  Future<Map<String, dynamic>?> buscarRelatorioCompleto() async {
+  Future<Map<String, dynamic>?> buscarRelatorioCompleto({int? ano, int? mes}) async {
     try {
       final token = await _storage.read(key: 'jwt_token');
       if (token == null) return null;
 
-      final agora = DateTime.now();
+      // Se mandar a data, a gente acopla na URL!
+      String urlFinal = '$baseUrl/inteligencia/relatorio';
+      if (ano != null && mes != null) {
+        urlFinal += '?ano=$ano&mes=$mes';
+      }
+
       final response = await http.get(
-        Uri.parse('$baseUrl/inteligencia/relatorio?ano=${agora.year}&mes=${agora.month}'), // [cite: 68, 69]
-        headers: {
-          'Authorization': 'Bearer $token',
-          'Content-Type': 'application/json',
-        },
+        Uri.parse(urlFinal),
+        headers: {'Authorization': 'Bearer $token'},
       );
 
       if (response.statusCode == 200) {
-        return jsonDecode(utf8.decode(response.bodyBytes)); // [cite: 78]
+        return jsonDecode(utf8.decode(response.bodyBytes));
       }
       return null;
     } catch (e) {
-      print("Caô na rede ao buscar o mapa do tesouro: $e");
+      print("Caô ao buscar relatório: $e");
       return null;
     }
   }

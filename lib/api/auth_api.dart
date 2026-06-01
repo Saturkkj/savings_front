@@ -14,12 +14,21 @@ class AuthAPI {
         body: jsonEncode({'email': email, 'senha': senha}),
       );
 
-      print("RESPOSTA DA API: ${response.statusCode}");
-      print("CORPO DA RESPOSTA: ${response.body}");
+      print("RESPOSTA DA API (LOGIN): ${response.statusCode}");
+      print("CORPO DA RESPOSTA (LOGIN): ${response.body}");
 
       if (response.statusCode == 200) {
-        final token = response.body;
-        await _storage.write(key: 'jwt_token', value: token);
+        String tokenLimpo = response.body;
+
+        if (tokenLimpo.startsWith('{')) {
+          final jsonMap = jsonDecode(tokenLimpo);
+          tokenLimpo = jsonMap['token'] ?? jsonMap['accessToken'] ?? tokenLimpo;
+        }
+
+        tokenLimpo = tokenLimpo.replaceAll('"', '').trim();
+
+        await _storage.write(key: 'jwt_token', value: tokenLimpo);
+        print("Token salvo no cofre limpinho: \$tokenLimpo");
         return true;
       }
       return false;
@@ -44,7 +53,7 @@ class AuthAPI {
         'perfilInvestidor': perfilBackend
       });
 
-      print("🧙‍♂️ ENVIANDO PRO SERVIDOR: $bodyEnviado");
+      print("ENVIANDO PRO SERVIDOR: $bodyEnviado");
 
       final response = await http.post(
         Uri.parse('$baseUrl/auth/register'),
@@ -52,12 +61,12 @@ class AuthAPI {
         body: bodyEnviado,
       );
 
-      print("🚨 STATUS DO SERVIDOR: ${response.statusCode}");
-      print("🚨 RESPOSTA DO SERVIDOR: ${response.body}");
+      print("STATUS DO SERVIDOR: ${response.statusCode}");
+      print("RESPOSTA DO SERVIDOR: ${response.body}");
 
       return response.statusCode == 200 || response.statusCode == 201;
     } catch (e) {
-      print("💀 Caô pesado na rede: $e");
+      print("Rede: $e");
       return false;
     }
   }

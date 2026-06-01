@@ -13,12 +13,15 @@ class TelaAnalises extends StatefulWidget {
 }
 
 class _TelaAnalisesState extends State<TelaAnalises> {
+  DateTime dataSelecionada = DateTime.now();
   final _storage = const FlutterSecureStorage();
 
   double rendaFixaMes = 0.0;
   double gastosTotaisMes = 0.0;
   List<dynamic> categoriasDaIA = [];
-  bool _carregando = true;
+
+  // Variável nova pra não quebrar o "Puxar pra Atualizar"
+  bool _carregandoPrimeiraVez = true;
 
   int touchedIndex = -1;
 
@@ -28,11 +31,22 @@ class _TelaAnalisesState extends State<TelaAnalises> {
     _carregarDadosReais();
   }
 
+  String _pegarNomeDoMes(int mes) {
+    const meses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+    return meses[mes - 1];
+  }
+
   Future<void> _carregarDadosReais() async {
-    setState(() => _carregando = true);
+    // Só esconde a tela se for a primeira vez abrindo o app
+    if (categoriasDaIA.isEmpty) {
+      setState(() => _carregandoPrimeiraVez = true);
+    }
 
     String? rendaSalva = await _storage.read(key: 'renda_total');
-    final relatorio = await AnaliseAPI().buscarRelatorioCompleto();
+    final relatorio = await AnaliseAPI().buscarRelatorioCompleto(
+        ano: dataSelecionada.year,
+        mes: dataSelecionada.month
+    );
 
     if (mounted) {
       setState(() {
@@ -42,7 +56,7 @@ class _TelaAnalisesState extends State<TelaAnalises> {
           categoriasDaIA = relatorio['mediasPorCategoria'] ?? [];
           gastosTotaisMes = categoriasDaIA.fold(0.0, (soma, item) => soma + (item['totalGastos'] ?? 0.0));
         }
-        _carregando = false;
+        _carregandoPrimeiraVez = false;
       });
     }
   }
@@ -131,7 +145,7 @@ class _TelaAnalisesState extends State<TelaAnalises> {
 
   @override
   Widget build(BuildContext context) {
-    if (_carregando) {
+    if (_carregandoPrimeiraVez) {
       return const Scaffold(
         backgroundColor: CoresApp.background,
         body: Center(child: CircularProgressIndicator(color: CoresApp.yellow)),
@@ -161,6 +175,45 @@ class _TelaAnalisesState extends State<TelaAnalises> {
 
                 _buildPainelOraculo(diagnostico),
 
+                const SizedBox(height: 25),
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(color: CoresApp.cardBackground, shape: BoxShape.circle),
+                      child: IconButton(
+                        icon: const Icon(Icons.chevron_left, color: CoresApp.yellow),
+                        onPressed: () {
+                          setState(() {
+                            // Volta 1 mês
+                            dataSelecionada = DateTime(dataSelecionada.year, dataSelecionada.month - 1);
+                            _carregarDadosReais(); // Faz a mágica acontecer!
+                          });
+                        },
+                      ),
+                    ),
+                    Text(
+                        "${_pegarNomeDoMes(dataSelecionada.month)} ${dataSelecionada.year}",
+                        style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)
+                    ),
+                    Container(
+                      decoration: BoxDecoration(color: CoresApp.cardBackground, shape: BoxShape.circle),
+                      child: IconButton(
+                        icon: const Icon(Icons.chevron_right, color: CoresApp.yellow),
+                        onPressed: () {
+                          setState(() {
+                            // Avança 1 mês pro futuro (onde as parcelas tão escondidas!)
+                            dataSelecionada = DateTime(dataSelecionada.year, dataSelecionada.month + 1);
+                            _carregarDadosReais();
+                          });
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+
+
                 const SizedBox(height: 35),
 
                 Container(
@@ -185,7 +238,12 @@ class _TelaAnalisesState extends State<TelaAnalises> {
                       sections: List.generate(categoriasDaIA.length, (i) {
                         final item = categoriasDaIA[i];
                         final cores = [const Color(0xFF8A2BE2), CoresApp.yellow, CoresApp.red, const Color(0xFF00CED1), Colors.orangeAccent];
-                        return _buildSection(i, item['totalGastos'], cores[i % cores.length]);
+
+                        // 🔮 MÁGICA DA PORCENTAGEM AQUI:
+                        double valor = item['totalGastos'] ?? 0.0;
+                        double porc = (gastosTotaisMes > 0) ? (valor / gastosTotaisMes) * 100 : 0;
+
+                        return _buildSection(i, valor, porc, cores[i % cores.length]);
                       }),
                     ),
                   ),
@@ -213,13 +271,14 @@ class _TelaAnalisesState extends State<TelaAnalises> {
     );
   }
 
-  PieChartSectionData _buildSection(int index, double valor, Color cor) {
+  // Recebe a porcentagem pra mostrar no texto da fatia da pizza
+  PieChartSectionData _buildSection(int index, double valor, double porc, Color cor) {
     return PieChartSectionData(
       color: cor,
-      value: valor,
-      title: 'R\$${valor.toInt()}',
+      value: valor, // O tamanho da fatia continua sendo o valor real
+      title: '${porc.toStringAsFixed(1)}%', // O título agora exibe a porcentagem!
       radius: index == touchedIndex ? 70 : 60,
-      titleStyle: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.white),
+      titleStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white),
     );
   }
 

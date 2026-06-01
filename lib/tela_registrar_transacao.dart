@@ -21,6 +21,9 @@ class _TelaRegistrarTransacaoState extends State<TelaRegistrarTransacao> {
   final _valorController = TextEditingController();
   final _descricaoController = TextEditingController();
 
+  // Variável do número de parcelas! Padrão é 1 (à vista)
+  int numeroDeParcelas = 1;
+
   @override
   void dispose() {
     _valorController.dispose();
@@ -45,8 +48,15 @@ class _TelaRegistrarTransacaoState extends State<TelaRegistrarTransacao> {
     String id = _descricaoController.text.isNotEmpty ? _descricaoController.text : "Transação sem nome";
     String categoria = _isGasto ? _categoriaGasto : _categoriaInvest;
 
-    // Bate na API
-    bool sucesso = await TransacaoAPI().registrarGasto(id, valorConvertido, categoria, _isGasto);
+    String tipoTransacao = _isGasto ? "DESPESA" : "RECEITA";
+
+    bool sucesso = await TransacaoAPI().registrarTransacaoCSV(
+        id,
+        valorConvertido,
+        categoria,
+        tipoTransacao,
+        parcelas: numeroDeParcelas // Passando a variável pro mensageiro!
+    );
 
     setState(() => _estaCarregando = false);
 
@@ -219,6 +229,52 @@ class _TelaRegistrarTransacaoState extends State<TelaRegistrarTransacao> {
               const SizedBox(height: 15),
               _buildInputLiso(Icons.calendar_today, "Data — hoje"),
               const SizedBox(height: 15),
+
+              // --- SELETOR DE PARCELAS ---
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                decoration: BoxDecoration(
+                  color: CoresApp.cardBackground,
+                  borderRadius: BorderRadius.circular(15),
+                  border: Border.all(color: CoresApp.textcinza.withOpacity(0.2)),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: const [
+                        Icon(Icons.credit_card, color: CoresApp.textcinza, size: 20),
+                        SizedBox(width: 10),
+                        Text("Parcelas", style: TextStyle(color: Colors.white, fontSize: 14)),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        IconButton(
+                          icon: const Icon(Icons.remove_circle_outline, color: CoresApp.yellow),
+                          onPressed: () {
+                            if (numeroDeParcelas > 1) {
+                              setState(() => numeroDeParcelas--);
+                            }
+                          },
+                        ),
+                        Text('$numeroDeParcelas x', style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
+                        IconButton(
+                          icon: const Icon(Icons.add_circle_outline, color: CoresApp.yellow),
+                          onPressed: () {
+                            // Limite de 12x pro herói não se enrolar nas dívidas!
+                            if (numeroDeParcelas < 12) {
+                              setState(() => numeroDeParcelas++);
+                            }
+                          },
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+              const SizedBox(height: 15),
+
               _buildInputLiso(Icons.location_on_outlined, "Estabelecimento (opcional)", colorIcon: const Color(0xFFFF6B6B)),
 
             ] else ...[
@@ -371,7 +427,6 @@ class _TelaRegistrarTransacaoState extends State<TelaRegistrarTransacao> {
               width: double.infinity,
               height: 55,
               child: ElevatedButton.icon(
-                // Aqui a mágica de carregar!
                 onPressed: _estaCarregando ? null : _registrarNoServidor,
                 icon: _estaCarregando
                     ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.black, strokeWidth: 2))
